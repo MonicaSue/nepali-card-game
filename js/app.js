@@ -15,7 +15,7 @@ let cardToRemove, turn, winner // understand this concept from lecture
 const deckEl = document.getElementById('deck')
 const computerHandEl = document.getElementById('computer-hand')
 const computerDiscardEl = document.getElementById('computer-discard')
-const playerHandEl = document.getElementById('player-hand')
+const playerHandContainerEl = document.getElementById('player-hand-container')
 const playerDiscardEl = document.getElementById('player-discard')
 
 // test deck elements - worked!
@@ -59,21 +59,41 @@ function init(){
 
 function handleDeal(){
   if (deck.length > 0) {
-    let randIdx = Math.floor(Math.random() * deck.length)
-    let cardPickedPlayer = deck.splice(randIdx, 1)[0]
-    playerHand.push(cardPickedPlayer)
-    render(cardPickedPlayer)
-  }
+    for (let index = 0; index < 5; index++) {
+      let randIdx = Math.floor(Math.random() * deck.length)
+      let playerDealtCard = deck.splice(randIdx, 1)[0]
+      playerHand.push(playerDealtCard)
+      render(playerDealtCard)
+      dealBtnEl.disabled = true
+    }
+
+      
+    }
+    
+    
+    // deal code works but only one at a time
+    // let randIdx = Math.floor(Math.random() * deck.length)
+    // let playerDealtCard = deck.splice(randIdx, 1)[0]
+    // playerHand.push(playerDealtCard)
+    // render(playerDealtCard)
+  //}
+}
+
+function render() {
+  playerHandContainerEl.innerHTML = ''
+  playerHand.forEach((card, idx) => {
+    appendPlayerCard(card, idx)
+  })
 }
 
 
 
-
-function render(cardPickedPlayer) {
-  if (playerHand.length === 1) {
-    playerHandEl.classList.remove('outline')
-  }
-  playerHandEl.classList.add(cardPickedPlayer)
+function appendPlayerCard(playerDealtCard, idx) {
+  console.log('appending', playerDealtCard)
+  let playerCard = document.createElement('div')
+  playerCard.className = 'card large'
+  playerCard.classList.add(playerDealtCard)
+  playerHandContainerEl.appendChild(playerCard)
   }
 
 // Deal random hand (5 cards) to each player
