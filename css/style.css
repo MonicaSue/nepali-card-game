@@ -1,0 +1,74 @@
+
+
+main {
+  text-align: center;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#computer-hand {
+  border: 5px solid black;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#pick-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#deck {
+  border: 2px solid black;
+  height: 200px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#computer-discard {
+  border: 2px solid black;
+  height: 200px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#player-discard {
+  border: 2px solid black;
+  height: 200px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#player-hand {
+  border: 5px solid black;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+button {
+  height: 40px;
+  width: 80px;
+  margin: 8px;
+  cursor: pointer;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+
+}
