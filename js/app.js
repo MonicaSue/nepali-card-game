@@ -26,6 +26,8 @@ const playerDiscardEl = document.getElementById('player-discard')
 // console.log(playerDiscardEl, 'player discard')
 
 //button elements
+const dealBtnEl = document.getElementById('deal')
+const discardBtnEl = document.getElementById('discard')
 const compareBtnEl = document.getElementById('compare-hands')
 const resetBtnEl = document.getElementById('reset')
 
@@ -41,9 +43,38 @@ const messageEl = document.getElementById("message")
 
 /*--------- Event Listeners ---------*/
 
+dealBtnEl.addEventListener('click', handleDeal)
+discardBtnEl.addEventListener('click', ()=> console.log('clicked', 'discard'))
+compareBtnEl.addEventListener('click', ()=> console.log('clicked', 'compare'))
+resetBtnEl.addEventListener('click', init)
 
 /*------------ Functions ------------*/
 
+init()
+
+// Initialize deck 1 with array of 52 cards 
+function init(){
+  deck = ["dA","dQ","dK","dJ","d10","d09","d08","d07","d06","d05","d04","d03","d02","hA","hQ","hK","hJ","h10","h09","h08","h07","h06","h05","h04","h03","h02","cA","cQ","cK","cJ","c10","c09","c08","c07","c06","c05","c04","c03","c02","sA","sQ","sK","sJ","s10","s09","s08","s07","s06","s05","s04","s03","s02"]
+}
+
+function handleDeal(){
+  if (deck.length > 0) {
+    let randIdx = Math.floor(Math.random() * deck.length)
+    let cardPickedPlayer = deck.splice(randIdx, 1)[0]
+    playerHand.push(cardPickedPlayer)
+    render(cardPickedPlayer)
+  }
+}
+
+
+
+
+function render(cardPickedPlayer) {
+  if (playerHand.length === 1) {
+    playerHandEl.classList.remove('outline')
+  }
+  playerHandEl.classList.add(cardPickedPlayer)
+  }
 
 // Deal random hand (5 cards) to each player
 // If player hand total is less than or equal to 5, compare hands button becomes available & player may ‘click button’:

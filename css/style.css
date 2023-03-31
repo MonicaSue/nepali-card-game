@@ -8,12 +8,23 @@ main {
   align-items: center;
 }
 
+.card {
+  margin: 3vh;
+}
+
+.card.outline {
+  border: 0.15em dashed #202d7a;
+}
+
+.card.shadow {
+  box-shadow: 7px 7px 7px 0 rgba(41, 41, 41, 0.95) !important;
+}
+
 #computer-hand {
-  border: 5px solid black;
   height: 200px;
+  width: 150px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
@@ -24,7 +35,6 @@ main {
 }
 
 #deck {
-  border: 2px solid black;
   height: 200px;
   width: 150px;
   display: flex;
@@ -33,7 +43,6 @@ main {
 }
 
 #computer-discard {
-  border: 2px solid black;
   height: 200px;
   width: 150px;
   display: flex;
@@ -43,7 +52,6 @@ main {
 }
 
 #player-discard {
-  border: 2px solid black;
   height: 200px;
   width: 150px;
   display: flex;
@@ -53,11 +61,11 @@ main {
 }
 
 #player-hand {
-  border: 5px solid black;
   height: 200px;
+  width: 150px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
