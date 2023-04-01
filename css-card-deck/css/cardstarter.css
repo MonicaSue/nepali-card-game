@@ -40,6 +40,9 @@
     background-image: none;
     background-color: rgba(195, 195, 195, 0.5);
     border: 0.15em dashed #daa520; }
+  .card.selection { 
+    border: 0.15em solid #ca9f32;
+  }
 
 .card.diamonds.A,
 .card.dA,

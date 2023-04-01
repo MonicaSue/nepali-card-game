@@ -13,16 +13,19 @@
 <body>
   <h1>Nepali Card Game</h1>
   <h2 id="message">Message</h2>
-  <section id="computer-hand" class="card large outline"></section>
-  <section id="pick-up">
-    <div id="deck" class="card large back-blue shadow"></div>
-    <div id="computer-discard" class="card large outline"></div>
-    <div id="player-discard" class="card large outline"></div>
-  </section>
-  <section id="player-hand-container"></section>
+  <main class="clickable-cards">
+    <section id="computer-hand-container"></section>
+    <section id="pick-up">
+      <div id="deck" class="card large back-blue shadow"></div>
+      <div id="computer-discard" class="card large outline"></div>
+      <div id="player-discard" class="card large outline"></div>
+    </section>
+    <section id="player-hand-container"></section>
+  </main>
   <div id="movement">
     <button id="deal">Deal</button>
     <button id="discard">Discard</button>
+    <button id="pick-up-card">Pick Up</button>
     <button id="compare-hands">Compare Hands</button>
   </div>
   <button id="reset">New Game</button>

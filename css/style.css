@@ -2,7 +2,7 @@
 
 main {
   text-align: center;
-  width: 600px;
+  width: 750px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,8 +21,8 @@ main {
 }
 
 #computer-hand {
-  height: 200px;
-  width: 150px;
+  height: 143px;
+  width: 104px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,16 +35,12 @@ main {
 }
 
 #deck {
-  height: 200px;
-  width: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 #computer-discard {
-  height: 200px;
-  width: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,22 +48,12 @@ main {
 }
 
 #player-discard {
-  height: 200px;
-  width: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-#player-hand {
-  height: 200px;
-  width: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 
 button {
   height: 40px;
