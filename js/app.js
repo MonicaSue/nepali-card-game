@@ -6,6 +6,9 @@ const cardValues = {A: 1, 02: 2, 03: 3, 04: 4, 05: 5, 06: 6, 07: 7, 08: 8, 09: 9
 let deck = []
 let computerHand = []
 let computerDiscard = []
+let computerDiscardSelection = [] //temporary array
+let computerPickUpSelection = [] //temporary array
+
 let playerHand = []
 let playerDiscardSelection = [] //temporary array
 let playerPickUpSelection = [] //temporary array
@@ -187,25 +190,37 @@ function appendPlayerDiscard(playerDiscardCard, idx) {
 }
 // Above code for discard functionality
 
-//Pick-Up Functionality
+//Player Pick-Up Functionality
 //
 function handleDeckPickUp() {
   console.log('deck clicked')
   if (deck.length > 0) {
-    let randIdx = Math.floor(Math.random() * deck.length)
-    let playerPickUpCard = deck.splice(randIdx, 1)[0]
-    playerPickUpSelection.push(playerPickUpCard)
+    if (turn = 1) {
+      let randIdx = Math.floor(Math.random() * deck.length)
+      let playerPickUpCard = deck.splice(randIdx, 1)[0]
+      playerPickUpSelection.push(playerPickUpCard)
     // renderPlayerHand(playerPickUpCard)
-    }
+    } else { // added this after confirming all of player 1 round 1 works
+      let randIdx = Math.floor(Math.random() * deck.length)
+      let computerPickUpCard = deck.splice(randIdx, 1)[0]
+      computerPickUpSelection.push(computerPickUpCard)
+    }  
+  }
 }
 
 function handlePickUp () {
-  playerHand.push(playerPickUpSelection)
-  renderPlayerHand()
-  playerPickUpSelection = []
+  if (turn = 1) {
+    playerHand.push(playerPickUpSelection)
+    renderPlayerHand()
+    playerPickUpSelection = []
+  } else {//added this after confirming all of player 1 round 1 works
+    computerHand.push(computerPickUpSelection)
+    renderComputerHand()
+    computerPickUpSelection = []
+
+  }
   pickUpBtnEl.disabled = true
 }
-
 
 //Above code for pick-up functionality
 
