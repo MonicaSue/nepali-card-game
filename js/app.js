@@ -140,8 +140,12 @@ function handleSelection(evt) {
   playerHand.forEach((num, idx) => {
     const target = evt.target.closest(`#P${idx}`)
     console.log(target)
+    target.classList.add('selection')
+    // target.classList.remove('selection')
   })
 } 
+
+function highlight 
 
 
 //switch player function
@@ -165,26 +169,3 @@ function handleSelection(evt) {
 //   });
 
 // }
-
-
-
-
-// Else player will select the card(s) to remove from their hand and ‘click the discard button' 
-// If multiple cards are discarded, the player unlocks "license" 
-// Player will pick up one card from the communal deck or if the player obtained "license", they can select 1 card from the opponent's last turn discard pile and place it in their hand
-// Next player's turn, return to step 2
-
-
-
-
-//scoring
-// If the player's hand total is less than the opponent's hand value, the player wins!
-// Player will have a score value of 0 in this round to be added to total game score
-// Opponent will have a score value of total hand value to be added to total game score 
-// Else if opponent’s hand total is less than the player's hand total, the opponent wins!
-// Opponent will have a score value of 0 in this round to be added to total game score
-// Player will have a score value of 25 + total hand value in this round to be added to total game score 
-// Check if players' total game score is greater than or equal to 100
-// If player's game score is true, game is over & the opponent wins, or vice-versa
-// Reset game functionality
-// Else new round is Rendered, return to step 1
