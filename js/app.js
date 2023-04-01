@@ -7,6 +7,7 @@ let deck = []
 let computerHand = []
 let computerDiscard = []
 let playerHand = []
+let playerDiscardSelection = []
 let playerDiscard = []
 let cardToRemove, turn, winner // understand this concept from lecture
 
@@ -19,7 +20,8 @@ const computerHandContainerEl = document.getElementById('computer-hand-container
 const computerDiscardEl = document.getElementById('computer-discard')
 
 const playerHandContainerEl = document.getElementById('player-hand-container')
-const playerDiscardEl = document.getElementById('player-discard')
+const playerDiscardContainerEl = document.getElementById('player-discard-container')
+// const playerDiscardEl = document.getElementById('player-discard')
 
 
 // test deck elements - worked!
@@ -53,7 +55,7 @@ const messageEl = document.getElementById("message")
 /*--------- Event Listeners ---------*/
 
 dealBtnEl.addEventListener('click', handleDeal)
-discardBtnEl.addEventListener('click', ()=> console.log('clicked', 'discard'))
+discardBtnEl.addEventListener('click', handleDiscard)
 compareBtnEl.addEventListener('click', ()=> console.log('clicked', 'compare'))
 
 //player event listener
@@ -89,7 +91,7 @@ function handleDeal(){
       let randIdx = Math.floor(Math.random() * deck.length)
       let playerDealtCard = deck.splice(randIdx, 1)[0]
       playerHand.push(playerDealtCard)
-      renderPlayer(playerDealtCard)
+      renderPlayerHand(playerDealtCard)
       }
     }
   if (deck.length > 0) {
@@ -97,7 +99,7 @@ function handleDeal(){
       let randIdx = Math.floor(Math.random() * deck.length)
       let computerDealtCard = deck.splice(randIdx, 1)[0]
       computerHand.push(computerDealtCard)
-      renderComputer(computerDealtCard)
+      renderComputerHand(computerDealtCard)
       }
     } 
   dealBtnEl.disabled = true
@@ -120,14 +122,14 @@ function appendComputerCard(computerDealtCard, idx) {
   computerHandContainerEl.appendChild(computerCard)
 }
 
-function renderPlayer() {
+function renderPlayerHand() {
   playerHandContainerEl.innerHTML = '' // clean state
   playerHand.forEach((playerDealtCard, idx) => {
     appendPlayerCard(playerDealtCard, idx)
   })
 }
 
-function renderComputer() {
+function renderComputerHand() {
   computerHandContainerEl.innerHTML = '' // clean state
   computerHand.forEach((computerDealtCard, idx) => {
     appendComputerCard(computerDealtCard, idx)
@@ -135,18 +137,52 @@ function renderComputer() {
 }
 // Above code for 5 hand deal -- beginning of each hand`
 
-//selecting & highlighting cards to discard
+
+//Selecting card in player hand and putting it in a temporary array
 function handleSelection(evt) {
   playerHand.forEach((num, idx) => {
-    const target = evt.target.closest(`#P${idx}`)
-    console.log(target)
-    target.classList.add('selection')
-    // target.classList.remove('selection')
+    const card = evt.target.closest(`#P${idx}`)
+    if (card != null) {
+      playerDiscardSelection.push(playerHand[parseInt(card.id.slice(1))])
+    } 
   })
 } 
 
-function highlight 
+function handleDiscard() {
+  playerDiscardSelection.forEach((card, idx) => {
+    playerDiscard.push(card)
+    renderPlayerDiscard()
+    for (let i = 0; i < playerHand.length; i++) {
+      if (playerHand[i] === playerDiscard[idx]) {
+        playerHand.splice(i, 1)
+      }
+      renderPlayerHand()
+    }
+  })
 
+  // playerHand.splice((playerHand.indexOf(card), 1))
+  // renderPlayerHand()
+}
+
+function renderPlayerDiscard() {
+  playerDiscardContainerEl.innerHTML = '' // clean state
+  playerDiscard.forEach((playerDiscardCard, idx) => {
+    appendPlayerDiscard(playerDiscardCard, idx)
+  })
+}
+
+function appendPlayerDiscard(playerDiscardCard, idx) {
+  let playerDiscard = document.createElement('div')
+  playerDiscard.className = 'card large outline'
+  playerDiscard.classList.add(playerDiscardCard)
+  playerDiscard.id = `PD${idx}`
+  playerDiscardContainerEl.appendChild(playerDiscard)
+}
+
+
+// function highlight 
+// target.classList.add('selection')
+// target.classList.remove('selection')
 
 //switch player function
 // function switchPlayerTurn() {
@@ -167,5 +203,4 @@ function highlight
 //     playerValue += parseInt(card.slice(1))
 //     console.log(playerValue)
 //   });
-
 // }
