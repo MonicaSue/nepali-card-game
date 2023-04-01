@@ -13,7 +13,7 @@ let playerHand = []
 let playerDiscardSelection = [] //temporary array
 let playerPickUpSelection = [] //temporary array
 let playerDiscard = []
-let cardToRemove, turn, winner // understand this concept from lecture
+let cardToRemove, round, turn, winner // understand this concept from lecture
 
 
 
@@ -88,7 +88,9 @@ function init(){
   computerHand = []
   playerHand = []
   turn = 1
-  
+  round = 0
+  winner = false
+  updateMessage()
 }
 
 // Deal random hand (5 cards) to each player
@@ -112,6 +114,8 @@ function handleDeal(){
     } 
   dealBtnEl.disabled = true
   discardBtnEl.disabled = false
+  round = 1
+  updateMessage()
 }
 
 // Appends the player cards to the player hand container
@@ -220,10 +224,28 @@ function handlePickUp () {
 
   }
   pickUpBtnEl.disabled = true
+  switchPlayerTurn()
 }
-
 //Above code for pick-up functionality
 
+function updateMessage () {
+  let turnText = turn === 1 ? `Player 1` : `Player 2`
+  if (!winner && round === 0) {
+    messageEl.textContent = `Game On! Click Deal`
+  } else if (!winner && round > 0) {
+    messageEl.textContent = `${turnText}'s turn`
+  } else if (winner) {
+    messageEl.textContent = `We have a winner!!`
+  }
+}
+
+function switchPlayerTurn() {
+  if (winner === true) {
+    return
+  } else {
+    turn *= -1
+  }
+}
 
 
 
