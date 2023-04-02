@@ -73,8 +73,9 @@ document.addEventListener('click', handleDiscardSelection)
 //deck event listener
 deckEl.addEventListener('click', handleDeckPickUp)
 
+/*--------------------- Functions ---------------------*/
 
-/*------------ Functions ------------*/
+/*------------ Game Start & Deal Functions ------------*/
 
 init()
 
@@ -118,6 +119,11 @@ function handleDeal(){
   handVisibility()
 }
 
+/*-------------------------- END --------------------------*/
+
+/*------------- Append & Render Hand Functions ------------*/
+
+
 // Appends the player cards to the player hand container
 function appendPlayerCard(playerDealtCard, idx) {
   let playerCard = document.createElement('div')
@@ -127,26 +133,10 @@ function appendPlayerCard(playerDealtCard, idx) {
   playerHandContainerEl.appendChild(playerCard)
 }
 
-function appendComputerCard(computerDealtCard, idx) {
-  let computerCard = document.createElement('div')
-  computerCard.className = 'card large'
-  computerCard.classList.add(computerDealtCard)
-  computerCard.id = `C${idx}`
-  computerHandContainerEl.appendChild(computerCard)
-}
-
-function hideComputerHand() {
-  let computerCard = document.createElement('div')
-  computerCard.className = 'card large'
-  computerCard.classList.add('back-blue')
-  // computerCard.id = `C${idx}`
-  computerHandContainerEl.appendChild(computerCard)
-}
-
-function renderHiddenComputerHand () {
-  computerHandContainerEl.innerHTML = '' // clean state
-  computerHand.forEach((computerDealtCard, idx) => {
-    hideComputerHand(computerDealtCard, idx)
+function renderPlayerHand() {
+  playerHandContainerEl.innerHTML = '' // clean state
+  playerHand.forEach((playerDealtCard, idx) => {
+    appendPlayerCard(playerDealtCard, idx)
   })
 }
 
@@ -165,11 +155,12 @@ function renderHiddenPlayerHand () {
   })
 }
 
-function renderPlayerHand() {
-  playerHandContainerEl.innerHTML = '' // clean state
-  playerHand.forEach((playerDealtCard, idx) => {
-    appendPlayerCard(playerDealtCard, idx)
-  })
+function appendComputerCard(computerDealtCard, idx) {
+  let computerCard = document.createElement('div')
+  computerCard.className = 'card large'
+  computerCard.classList.add(computerDealtCard)
+  computerCard.id = `C${idx}`
+  computerHandContainerEl.appendChild(computerCard)
 }
 
 function renderComputerHand() {
@@ -178,58 +169,120 @@ function renderComputerHand() {
     appendComputerCard(computerDealtCard, idx)
   })
 }
-// Above code for 5 hand deal -- beginning of each hand`
 
+function hideComputerHand() {
+  let computerCard = document.createElement('div')
+  computerCard.className = 'card large'
+  computerCard.classList.add('back-blue')
+  // computerCard.id = `C${idx}`
+  computerHandContainerEl.appendChild(computerCard)
+}
+
+function renderHiddenComputerHand () {
+  computerHandContainerEl.innerHTML = '' // clean state
+  computerHand.forEach((computerDealtCard, idx) => {
+    hideComputerHand(computerDealtCard, idx)
+  })
+}
+
+/*-------------------------- END --------------------------*/
+
+/*------------------- Discard Functions -------------------*/
 
 //Selecting card(s) to be discarded and rendered in the discard container
 //Selecting card in player hand and putting it in a temporary array
 function handleDiscardSelection(evt) {
-  playerHand.forEach((num, idx) => {
-    const card = evt.target.closest(`#P${idx}`)
-    if (card != null) {
-      playerDiscardSelection.push(playerHand[parseInt(card.id.slice(1))])
-    } 
-  })
+  if (turn === 1) {
+    playerHand.forEach((num, idx) => {
+      const card = evt.target.closest(`#P${idx}`)
+      if (card != null) {
+        playerDiscardSelection.push(playerHand[parseInt(card.id.slice(1))])
+      } 
+    })
+  } else {
+    computerHand.forEach((num, idx) => {
+      const card = evt.target.closest(`#C${idx}`)
+      if (card != null) {
+        computerDiscardSelection.push(computerHand[parseInt(card.id.slice(1))])
+      }
+    })
+  }
 } 
 
 function handleDiscard() {
-  playerDiscardSelection.forEach((card, idx) => {
-    playerDiscard.push(card)
-    renderPlayerDiscard()
-    for (let i = 0; i < playerHand.length; i++) {
-      if (playerHand[i] === playerDiscard[idx]) {
-        playerHand.splice(i, 1)
+  if (turn === 1) {
+    playerDiscardSelection.forEach((card, idx) => {
+      playerDiscard.push(card)
+      renderDiscard() //changed renderPlayerDiscard function to renderDiscard
+      for (let i = 0; i < playerHand.length; i++) {
+        if (playerHand[i] === playerDiscard[idx]) {
+          playerHand.splice(i, 1)
+        }
+        renderPlayerHand()
       }
-      renderPlayerHand()
-    }
-  })
+    })
+  } else {
+    computerDiscardSelection.forEach((card, idx) => {
+      computerDiscard.push(card)
+      renderDiscard()
+      for (let i = 0; i < computerHand.length; i++) {
+        if (computerHand[i] === computerDiscard[idx]) {
+          computerHand.splice(i, 1)
+        }
+        renderComputerHand()
+      }
+    })
+  }
 }
 
-function renderPlayerDiscard() {
-  playerDiscardContainerEl.innerHTML = '' // clean state
-  playerDiscard.forEach((playerDiscardCard, idx) => {
-    appendPlayerDiscard(playerDiscardCard, idx)
-  })
-  pickUpBtnEl.disabled = false
-  discardBtnEl.disabled = true
-  playerDiscardSelection = []
+function renderDiscard() {
+  if (turn === 1) {
+    playerDiscardContainerEl.innerHTML = '' // clean state
+    playerDiscard.forEach((playerDiscardCard, idx) => {
+      appendPlayerDiscard(playerDiscardCard, idx)
+    })
+    pickUpBtnEl.disabled = false
+    discardBtnEl.disabled = true
+    playerDiscardSelection = []
+  } else {
+    computerDiscardContainerEl.innerHTML = '' // clean state
+    computerDiscard.forEach((computerDiscardCard, idx) => {
+      appendComputerDiscard(computerDiscardCard, idx)
+    })
+    pickUpBtnEl.disabled = false
+    discardBtnEl.disabled = true
+    computerDiscardSelection = []
+  }
 }
 
 function appendPlayerDiscard(playerDiscardCard, idx) {
-  let playerDiscard = document.createElement('div')
-  playerDiscard.className = 'card large outline'
-  playerDiscard.classList.add(playerDiscardCard)
-  playerDiscard.id = `PD${idx}`
-  playerDiscardContainerEl.appendChild(playerDiscard)
+  if (turn === 1) {
+    let playerDiscard = document.createElement('div')
+    playerDiscard.className = 'card large outline'
+    playerDiscard.classList.add(playerDiscardCard)
+    playerDiscard.id = `PD${idx}`
+    playerDiscardContainerEl.appendChild(playerDiscard)
+  }
+}
+
+function appendComputerDiscard(computerDiscardCard, idx) {
+  if (turn != 1) {
+    let computerDiscard = document.createElement('div')
+    computerDiscard.className = 'card large outline'
+    computerDiscard.classList.add(computerDiscardCard)
+    computerDiscard.id = `PD${idx}`
+    computerDiscardContainerEl.appendChild(computerDiscard)
+  }
 }
 // Above code for discard functionality
+/*-------------------------- END --------------------------*/
 
 //Player Pick-Up Functionality
 //
 function handleDeckPickUp() {
   console.log('deck clicked')
   if (deck.length > 0) {
-    if (turn = 1) {
+    if (turn === 1) {
       let randIdx = Math.floor(Math.random() * deck.length)
       let playerPickUpCard = deck.splice(randIdx, 1)[0]
       playerPickUpSelection.push(playerPickUpCard)
@@ -243,7 +296,7 @@ function handleDeckPickUp() {
 }
 
 function handlePickUp () {
-  if (turn = 1) {
+  if (turn === 1) {
     playerHand.push(playerPickUpSelection)
     renderPlayerHand()
     playerPickUpSelection = []
@@ -251,9 +304,9 @@ function handlePickUp () {
     computerHand.push(computerPickUpSelection)
     renderComputerHand()
     computerPickUpSelection = []
-
   }
   pickUpBtnEl.disabled = true
+  discardBtnEl.disabled = false
   switchPlayerTurn()
   updateMessage()
   handVisibility()
