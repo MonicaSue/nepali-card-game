@@ -13,7 +13,7 @@ let playerHand = []
 let playerDiscardSelection = [] //temporary array
 let playerPickUpSelection = [] //temporary array
 let playerDiscard = []
-let cardToRemove, round, turn, winner // understand this concept from lecture
+let cardToRemove, step, round, turn, winner // understand this concept from lecture
 
 
 /*---- Cached Element References ----*/
@@ -26,35 +26,17 @@ const computerDiscardContainerEl = document.getElementById('computer-discard-con
 const playerHandContainerEl = document.getElementById('player-hand-container')
 const playerDiscardContainerEl = document.getElementById('player-discard-container')
 
-
-// test deck elements - worked!
-// console.log(deckEl, 'deck')
-// console.log(computerHandEl, 'computer hand')
-// console.log(computerDiscardContainerEl, 'computer discard')
-// console.log(playerHandEl, 'player hand')
-// console.log(playerDiscardContainerEl, 'player discard')
-
-
 //button elements
 const dealBtnEl = document.getElementById('deal')
 const discardBtnEl = document.getElementById('discard')
 const compareBtnEl = document.getElementById('compare-hands')
 const pickUpBtnEl = document.getElementById('pick-up-card')
 
-
-const resetBtnEl = document.getElementById('reset')
-
-//test button elements - worked!
-// console.log(compareBtnEl, 'compare btn')
-// console.log(resetBtnEl, 'reset btn')
-// console.log(pickUpBtnEl, 'pick-up-card')
-
+// const resetBtnEl = document.getElementById('reset')
 
 //message element
 const messageEl = document.getElementById("message")
 
-//test message element - worked!
-// console.log(messageEl, 'message')
 
 /*--------- Event Listeners ---------*/
 
@@ -65,13 +47,14 @@ compareBtnEl.addEventListener('click', ()=> console.log('clicked', 'compare'))
 // resetBtnEl.addEventListener('click', init)
 
 //playerHand-Discard Selection event listener
-document.addEventListener('click', handleDiscardSelection)
+document.addEventListener('click', handleCardSelection)
 
 //player Pick-Up Selection event listener
 // document.addEventListener('click', handlePickUpSelection)
 
 //deck event listener
 deckEl.addEventListener('click', handleDeckPickUp)
+
 
 /*--------------------- Functions ---------------------*/
 
@@ -88,8 +71,9 @@ function init(){
   computerHand = []
   playerHand = []
   turn = 1
-  round = 0
+  round = 1
   winner = false
+  step = 'New Game'
   updateMessage()
 }
 
@@ -117,6 +101,7 @@ function handleDeal(){
   round = 1
   updateMessage()
   handVisibility()
+  gameStep()
 }
 
 /*-------------------------- END --------------------------*/
@@ -191,8 +176,9 @@ function renderHiddenComputerHand () {
 
 //Selecting card(s) to be discarded and rendered in the discard container
 //Selecting card in player hand and putting it in a temporary array
-function handleDiscardSelection(evt) {
-  if (turn === 1) {
+//changing card selection function to account for discard and pick-up:
+function handleCardSelection(evt) {
+  if (turn === 1 && step === 'discard') {
     playerHand.forEach((num, idx) => {
       const card = evt.target.closest(`#P${idx}`)
       if (card != null) {
@@ -207,13 +193,29 @@ function handleDiscardSelection(evt) {
       }
     })
   }
-} 
+  // trying to see if I can add the discard pick up functionality
+  // if (turn === 1 && step === 'pick-up') {
+  //   computerDiscard.forEach((num, idx) => {
+  //     const card = evt.target.closest(`#CD${idx}`)
+  //     if (card != null) {
+  //       playerPickUpSelection.push(computerDiscard[parseInt(card.id.slice(1))])
+  //     } 
+  //   })
+  // } else {
+  //   playerDiscard.forEach((num, idx) => {
+  //     const card = evt.target.closest(`#PD${idx}`)
+  //     if (card != null) {
+  //       playerPickUpSelection.push(playerDiscard[parseInt(card.id.slice(1))])
+  //     }
+  //   })
+  // } 
+}
 
 function handleDiscard() {
   if (turn === 1) {
     playerDiscardSelection.forEach((card, idx) => {
       playerDiscard.push(card)
-      renderDiscard() //changed renderPlayerDiscard function to renderDiscard
+      renderDiscard()
       for (let i = 0; i < playerHand.length; i++) {
         if (playerHand[i] === playerDiscard[idx]) {
           playerHand.splice(i, 1)
@@ -233,6 +235,7 @@ function handleDiscard() {
       }
     })
   }
+  gameStep()
 }
 
 function renderDiscard() {
@@ -270,17 +273,18 @@ function appendComputerDiscard(computerDiscardCard, idx) {
     let computerDiscard = document.createElement('div')
     computerDiscard.className = 'card large outline'
     computerDiscard.classList.add(computerDiscardCard)
-    computerDiscard.id = `PD${idx}`
+    computerDiscard.id = `CD${idx}`
     computerDiscardContainerEl.appendChild(computerDiscard)
   }
 }
-// Above code for discard functionality
+
 /*-------------------------- END --------------------------*/
+
+/*------------------- Pick-Up Functions -------------------*/
 
 //Player Pick-Up Functionality
 //
 function handleDeckPickUp() {
-  console.log('deck clicked')
   if (deck.length > 0) {
     if (turn === 1) {
       let randIdx = Math.floor(Math.random() * deck.length)
@@ -295,6 +299,15 @@ function handleDeckPickUp() {
   }
 }
 
+// function handleDiscardPickUp () {
+//   if (turn === 1 && step === 'pick-up') {
+//     if (computerDiscard.length > 0) {
+//       ///code
+//     }
+//   } //else here for computer rendering
+// }
+
+
 function handlePickUp () {
   if (turn === 1) {
     playerHand.push(playerPickUpSelection)
@@ -304,21 +317,38 @@ function handlePickUp () {
     computerHand.push(computerPickUpSelection)
     renderComputerHand()
     computerPickUpSelection = []
-  }
+    }
   pickUpBtnEl.disabled = true
   discardBtnEl.disabled = false
+  clearDiscardContainer()
   switchPlayerTurn()
   updateMessage()
   handVisibility()
+  gameStep()
 }
 //Above code for pick-up functionality
+
+/*-------------------------- END --------------------------*/
+
+/*-------------------- Other Functions --------------------*/
+
+//NEED TO UPDATE: DELAY THE SWITCH
+function handVisibility() {
+  if (turn === 1) {
+    renderPlayerHand()
+    renderHiddenComputerHand()
+  } else {
+    renderComputerHand()
+    renderHiddenPlayerHand()
+  }
+}
 
 function updateMessage () {
   let turnText = turn === 1 ? `Player 1` : `Player 2`
   if (!winner && round === 0) {
     messageEl.textContent = `Game On! Click Deal`
   } else if (!winner && round > 0) {
-    messageEl.textContent = `${turnText}'s turn`
+    messageEl.textContent = `${turnText}'s Turn`
   } else if (winner) {
     messageEl.textContent = `We have a winner!!`
   }
@@ -332,17 +362,30 @@ function switchPlayerTurn() {
   }
 }
 
-//NEED TO UPDATE: DELAY THE SWITCH
-function handVisibility() {
-  if (turn === 1) {
-    renderPlayerHand()
-    renderHiddenComputerHand()
-  } else {
-    renderComputerHand()
-    renderHiddenPlayerHand()
+function roundCount() {
+  round += 1
+}
+
+function gameStep() {
+  if (discardBtnEl.disabled === false) {
+    step = 'discard'
+  } else if (pickUpBtnEl.disabled === false) {
+    step ='pick-up'
   }
 }
 
+// called after pick-up button is selected
+function clearDiscardContainer () {
+  if (turn === 1) {
+    computerDiscardContainerEl.innerHTML = ''
+    computerDiscard = []
+  } else {
+    playerDiscardContainerEl.innerHTML = ''
+    playerDiscard = []
+  }
+}
+
+/*-------------------------- END --------------------------*/
 
 
 //Compare Hands Functionality 
