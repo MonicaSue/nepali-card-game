@@ -16,7 +16,6 @@ let playerDiscard = []
 let cardToRemove, round, turn, winner // understand this concept from lecture
 
 
-
 /*---- Cached Element References ----*/
 //card elements
 const deckEl = document.getElementById('deck')
@@ -116,6 +115,7 @@ function handleDeal(){
   discardBtnEl.disabled = false
   round = 1
   updateMessage()
+  handVisibility()
 }
 
 // Appends the player cards to the player hand container
@@ -133,6 +133,36 @@ function appendComputerCard(computerDealtCard, idx) {
   computerCard.classList.add(computerDealtCard)
   computerCard.id = `C${idx}`
   computerHandContainerEl.appendChild(computerCard)
+}
+
+function hideComputerHand() {
+  let computerCard = document.createElement('div')
+  computerCard.className = 'card large'
+  computerCard.classList.add('back-blue')
+  // computerCard.id = `C${idx}`
+  computerHandContainerEl.appendChild(computerCard)
+}
+
+function renderHiddenComputerHand () {
+  computerHandContainerEl.innerHTML = '' // clean state
+  computerHand.forEach((computerDealtCard, idx) => {
+    hideComputerHand(computerDealtCard, idx)
+  })
+}
+
+function hidePlayerHand() {
+  let playerCard = document.createElement('div')
+  playerCard.className = 'card large'
+  playerCard.classList.add('back-blue')
+  // computerCard.id = `C${idx}`
+  playerHandContainerEl.appendChild(playerCard)
+}
+
+function renderHiddenPlayerHand () {
+  playerHandContainerEl.innerHTML = '' // clean state
+  playerHand.forEach((playerDealtCard, idx) => {
+    hidePlayerHand(playerDealtCard, idx)
+  })
 }
 
 function renderPlayerHand() {
@@ -225,6 +255,8 @@ function handlePickUp () {
   }
   pickUpBtnEl.disabled = true
   switchPlayerTurn()
+  updateMessage()
+  handVisibility()
 }
 //Above code for pick-up functionality
 
@@ -244,6 +276,17 @@ function switchPlayerTurn() {
     return
   } else {
     turn *= -1
+  }
+}
+
+//NEED TO UPDATE: DELAY THE SWITCH
+function handVisibility() {
+  if (turn === 1) {
+    renderPlayerHand()
+    renderHiddenComputerHand()
+  } else {
+    renderComputerHand()
+    renderHiddenPlayerHand()
   }
 }
 
