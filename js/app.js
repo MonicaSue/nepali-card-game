@@ -185,30 +185,29 @@ function handleCardSelection(evt) {
         playerDiscardSelection.push(playerHand[parseInt(card.id.slice(1))])
       } 
     })
-  } else {
+  } else if (turn != 1 && step === 'discard'){
     computerHand.forEach((num, idx) => {
       const card = evt.target.closest(`#C${idx}`)
       if (card != null) {
         computerDiscardSelection.push(computerHand[parseInt(card.id.slice(1))])
       }
     })
-  }
-  // trying to see if I can add the discard pick up functionality
-  // if (turn === 1 && step === 'pick-up') {
-  //   computerDiscard.forEach((num, idx) => {
-  //     const card = evt.target.closest(`#CD${idx}`)
-  //     if (card != null) {
-  //       playerPickUpSelection.push(computerDiscard[parseInt(card.id.slice(1))])
-  //     } 
-  //   })
-  // } else {
-  //   playerDiscard.forEach((num, idx) => {
-  //     const card = evt.target.closest(`#PD${idx}`)
-  //     if (card != null) {
-  //       playerPickUpSelection.push(playerDiscard[parseInt(card.id.slice(1))])
-  //     }
-  //   })
-  // } 
+    // trying to see if I can add the discard pick up functionality
+  } else if (turn === 1 && step === 'pick-up') {
+    computerDiscard.forEach((num, idx) => {
+      const card = evt.target.closest(`#CD${idx}`)
+      if (card != null) {
+        playerPickUpSelection.push(computerDiscard[parseInt(card.id.slice(2))])
+      } 
+    })
+  } else if (turn != 1 && step === 'pick-up') {
+    playerDiscard.forEach((num, idx) => {
+      const card = evt.target.closest(`#PD${idx}`)
+      if (card != null) {
+        computerPickUpSelection.push(playerDiscard[parseInt(card.id.slice(2))])
+      }
+    })
+  } 
 }
 
 function handleDiscard() {
@@ -299,15 +298,6 @@ function handleDeckPickUp() {
   }
 }
 
-// function handleDiscardPickUp () {
-//   if (turn === 1 && step === 'pick-up') {
-//     if (computerDiscard.length > 0) {
-//       ///code
-//     }
-//   } //else here for computer rendering
-// }
-
-
 function handlePickUp () {
   if (turn === 1) {
     playerHand.push(playerPickUpSelection)
@@ -374,7 +364,6 @@ function gameStep() {
   }
 }
 
-// called after pick-up button is selected
 function clearDiscardContainer () {
   if (turn === 1) {
     computerDiscardContainerEl.innerHTML = ''
