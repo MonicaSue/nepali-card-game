@@ -1,5 +1,7 @@
 /*------------ Constants ------------*/
-const cardValues = {A: 1, 02: 2, 03: 3, 04: 4, 05: 5, 06: 6, 07: 7, 08: 8, 09: 9, 10: 10, J: 10, Q: 10, K: 10}
+const cards = [
+  { name: 'A', value: 1 }, { name: '02', value: 2 }, { name: '03', value: 3 }, { name: '04', value: 4 }, { name: '05', value: 5 }, { name: '06', value: 6 }, { name: '07', value: 7}, { name: '08', value: 8 }, { name: '09', value: 9 }, { name: '10', value: 10 }, { name: 'J', value: 10}, { name: 'Q', value: 10 }, { name: 'K', value: 10}
+]
 
 
 /*------------ Variables ------------*/
@@ -43,7 +45,7 @@ const messageEl = document.getElementById("message")
 dealBtnEl.addEventListener('click', handleDeal)
 discardBtnEl.addEventListener('click', handleDiscard)
 pickUpBtnEl.addEventListener('click', handlePickUp)
-compareBtnEl.addEventListener('click', ()=> console.log('clicked', 'compare'))
+compareBtnEl.addEventListener('click', handleCompare)
 // resetBtnEl.addEventListener('click', init)
 
 //playerHand-Discard Selection event listener
@@ -172,11 +174,8 @@ function renderHiddenComputerHand () {
 
 /*-------------------------- END --------------------------*/
 
-/*------------------- Discard Functions -------------------*/
+/*---------------- Card Selector Function -----------------*/
 
-//Selecting card(s) to be discarded and rendered in the discard container
-//Selecting card in player hand and putting it in a temporary array
-//changing card selection function to account for discard and pick-up:
 function handleCardSelection(evt) {
   if (turn === 1 && step === 'discard') {
     playerHand.forEach((num, idx) => {
@@ -210,6 +209,10 @@ function handleCardSelection(evt) {
   } 
 }
 
+/*-------------------------- END --------------------------*/
+
+/*------------------- Discard Functions -------------------*/
+
 function handleDiscard() {
   if (turn === 1) {
     playerDiscardSelection.forEach((card, idx) => {
@@ -235,6 +238,7 @@ function handleDiscard() {
     })
   }
   gameStep()
+  compareBtnEl.disabled = true
 }
 
 function renderDiscard() {
@@ -281,8 +285,6 @@ function appendComputerDiscard(computerDiscardCard, idx) {
 
 /*------------------- Pick-Up Functions -------------------*/
 
-//Player Pick-Up Functionality
-//
 function handleDeckPickUp() {
   if (deck.length > 0) {
     if (turn === 1) {
@@ -300,11 +302,11 @@ function handleDeckPickUp() {
 
 function handlePickUp () {
   if (turn === 1) {
-    playerHand.push(playerPickUpSelection)
+    playerHand.push(playerPickUpSelection[0])
     renderPlayerHand()
     playerPickUpSelection = []
   } else {//added this after confirming all of player 1 round 1 works
-    computerHand.push(computerPickUpSelection)
+    computerHand.push(computerPickUpSelection[0])
     renderComputerHand()
     computerPickUpSelection = []
     }
@@ -314,15 +316,58 @@ function handlePickUp () {
   switchPlayerTurn()
   updateMessage()
   handVisibility()
+  compareEnable()
   gameStep()
 }
-//Above code for pick-up functionality
+
+/*-------------------------- END --------------------------*/
+
+/*---------------- Compare Hands Functions ----------------*/
+
+function compareEnable() {
+  if (turn === 1) {
+    let playerTotal = 0
+    playerHand.forEach(playerCard => {
+      let playerCardName = playerCard.slice(1)
+      cards.forEach(card => {
+        if (card.name === playerCardName) {
+          playerTotal += card.value
+        }
+      })
+    })
+    if (playerTotal <= 5) {
+      compareBtnEl.disabled = false
+    } 
+  } else {
+    let computerTotal = 0
+    computerHand.forEach(computerCard => {
+      let computerCardName = computerCard.slice(1)
+      cards.forEach(card => {
+        if (card.name === computerCardName) {
+          computerTotal += card.value
+        }
+      })
+    })
+    if (computerTotal <= 5) {
+      compareBtnEl.disabled = false
+    }
+  }
+}
+
+function handleCompare() {
+  clearDiscardContainer()
+  renderPlayerHand()
+  renderComputerHand()
+  discardBtnEl.disabled = true
+  
+}
+
 
 /*-------------------------- END --------------------------*/
 
 /*-------------------- Other Functions --------------------*/
 
-//NEED TO UPDATE: DELAY THE SWITCH
+//NEED TO UPDATE: DELAYED SWITCH
 function handVisibility() {
   if (turn === 1) {
     renderPlayerHand()
@@ -377,25 +422,12 @@ function clearDiscardContainer () {
 /*-------------------------- END --------------------------*/
 
 
-//Compare Hands Functionality 
-// function compareHAnds() {
 
-// }
 
 
 // function highlight 
 // target.classList.add('selection')
 // target.classList.remove('selection')
-
-//switch player function
-// function switchPlayerTurn() {
-//   if (winner === true) {
-//     return
-//   } else {
-//     turn *= -1
-//   }
-
-// }
 
 // If player hand total is less than or equal to 5, compare hands button becomes available & player may ‘click button’:
 // enabling compare button
