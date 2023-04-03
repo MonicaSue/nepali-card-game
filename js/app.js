@@ -39,7 +39,9 @@ const nextRoundBtnEl = document.getElementById('next-round')
 
 //message element
 const messageEl = document.getElementById("message")
-const roundMessageEl= document.getElementById("round-message")
+const roundMessageEl = document.getElementById("round-message")
+const playerPointMessageEl = document.getElementById("player-points")
+const computerPointMessageEl = document.getElementById("computer-points")
 
 
 /*--------- Event Listeners ---------*/
@@ -64,7 +66,7 @@ init()
 
 // Initialize deck with array of 52 cards 
 function init(){
-  deck = ["dA","dQ","dK","dJ","d10","d09","d08","d07","d06","d05","d04","d03","d02","hA","hQ","hK","hJ","h10","h09","h08","h07","h06","h05","h04","h03","h02","cA","cQ","cK","cJ","c10","c09","c08","c07","c06","c05","c04","c03","c02","sA","sQ","sK","sJ","s10","s09","s08","s07","s06","s05","s04","s03","s02"]
+  refillDeck()
   discardBtnEl.disabled = true
   pickUpBtnEl.disabled = true
   compareBtnEl.disabled = true
@@ -78,6 +80,7 @@ function init(){
   playerPoints = 0
   computerPoints = 0
   updateMessage()
+  updateScoreboard()
 }
 
 // Deal random hand (5 cards) to each player
@@ -357,9 +360,12 @@ function compareEnable() {
 
 //NEED TO CALL POINTS / WINNING FUNCTIONALITY IN THE COMPARE HAND FUNCTION
 function handleCompare() {
+  gameStep()
   clearDiscardContainer()
   renderPlayerHand()
   renderComputerHand()
+  points()
+  updateScoreboard()
   discardBtnEl.disabled = true
   compareBtnEl.disabled = true
   nextRoundBtnEl.disabled = false
@@ -369,7 +375,38 @@ function handleCompare() {
 
 /*------------- Points / Winning Functionality ------------*/
 
-// function 
+function points() {
+  let playerTotal = 0
+    playerHand.forEach(playerCard => {
+      let playerCardName = playerCard.slice(1)
+      cards.forEach(card => {
+        if (card.name === playerCardName) {
+          playerTotal += card.value
+        }
+      })
+    })
+  let computerTotal = 0
+    computerHand.forEach(computerCard => {
+      let computerCardName = computerCard.slice(1)
+      cards.forEach(card => {
+        if (card.name === computerCardName) {
+          computerTotal += card.value
+        }
+      })
+    })
+  if (playerTotal < computerTotal) {
+    playerPoints += 0
+    computerPoints += computerTotal
+  } else if (computerTotal < playerTotal) {
+    computerPoints += 0
+    playerPoints += playerTotal
+  } else if (turn === 1 && playerTotal >= computerTotal) {
+    playerPoints += 25 + playerTotal
+    computerPoints += 0
+  } else if (turn != 1 && computerTotal >= playerTotal) {
+    computerPoints += 25 + playerTotal
+  }
+}
 
 /*-------------------------- END --------------------------*/
 
@@ -378,6 +415,7 @@ function handleCompare() {
 function handleNextRound() {
   compareBtnEl.disabled = true
   clearPlayersHandContainers()
+  refillDeck()  
   switchPlayerTurn()
   updateMessage()
   dealBtnEl.disabled = false
@@ -389,6 +427,10 @@ function handleNextRound() {
 /*-------------------- Other Functions --------------------*/
 
 //NEED TO UPDATE: DELAYED SWITCH
+function refillDeck() {
+  deck = ["dA","dQ","dK","dJ","d10","d09","d08","d07","d06","d05","d04","d03","d02","hA","hQ","hK","hJ","h10","h09","h08","h07","h06","h05","h04","h03","h02","cA","cQ","cK","cJ","c10","c09","c08","c07","c06","c05","c04","c03","c02","sA","sQ","sK","sJ","s10","s09","s08","s07","s06","s05","s04","s03","s02"]
+}
+
 function handVisibility() {
   if (turn === 1) {
     renderPlayerHand()
@@ -403,7 +445,7 @@ function updateMessage () {
   let turnText = turn === 1 ? `Player 1` : `Player 2`
   if (!winner && round === 0) {
     messageEl.textContent = `Game On! Click Deal`
-    roundMessageEl.textContent = `Round ${round}`
+    roundMessageEl.textContent = ``
   } else if (!winner && round > 0) {
     messageEl.textContent = `${turnText}'s Turn`
     roundMessageEl.textContent = `Round ${round}`
@@ -411,6 +453,11 @@ function updateMessage () {
     messageEl.textContent = `We have a winner!!`
     roundMessageEl.textContent = `Round ${round}`
   }
+}
+
+function updateScoreboard() {
+  playerPointMessageEl.textContent = `${playerPoints}`
+  computerPointMessageEl.textContent = `${computerPoints}`
 }
 
 function switchPlayerTurn() {
@@ -426,10 +473,12 @@ function roundCount() {
 }
 
 function gameStep() {
-  if (discardBtnEl.disabled === false) {
+  if (discardBtnEl.disabled === false && nextRoundBtnEl.disabled === true) {
     step = 'discard'
-  } else if (pickUpBtnEl.disabled === false) {
-    step ='pick-up'
+  } else if (pickUpBtnEl.disabled === false & nextRoundBtnEl.disabled === true) {
+    step = 'pick-up'
+  } else if (nextRoundBtnEl.disabled === false) {
+    step = 'compare-hands'
   }
 }
 
@@ -453,20 +502,7 @@ function clearPlayersHandContainers() {
 /*-------------------------- END --------------------------*/
 
 
-
-
-
 // function highlight 
 // target.classList.add('selection')
 // target.classList.remove('selection')
 
-// If player hand total is less than or equal to 5, compare hands button becomes available & player may ‘click button’:
-// enabling compare button
-// function compareEnable() {
-//   let playerValue = 0
-//   playerHand.forEach(card => {
-//     console.log(parseInt(card.slice(1)))
-//     playerValue += parseInt(card.slice(1))
-//     console.log(playerValue)
-//   });
-// }

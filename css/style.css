@@ -74,7 +74,7 @@ button {
 
 .scoreboard {
   display: inline-grid;
-  background-color: rgb(188, 179, 154);
+  background-color: white;
   grid-template-columns: auto auto;
   padding: 10px;
   justify-content: center;
