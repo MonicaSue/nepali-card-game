@@ -187,14 +187,18 @@ function handleCardSelection(evt) {
     playerHand.forEach((num, idx) => {
       const card = evt.target.closest(`#P${idx}`)
       if (card != null) {
-        playerDiscardSelection.push(playerHand[parseInt(card.id.slice(1))])
+        if (!playerDiscardSelection.includes(playerHand[parseInt(card.id.slice(1))])) {
+          playerDiscardSelection.push(playerHand[parseInt(card.id.slice(1))])
+        }
       } 
     })
   } else if (turn != 1 && step === 'discard'){
     computerHand.forEach((num, idx) => {
       const card = evt.target.closest(`#C${idx}`)
       if (card != null) {
-        computerDiscardSelection.push(computerHand[parseInt(card.id.slice(1))])
+        if (!computerDiscardSelection.includes(computerHand[parseInt(card.id.slice(1))])) {
+          computerDiscardSelection.push(computerHand[parseInt(card.id.slice(1))])
+        }
       }
     })
     // trying to see if I can add the discard pick up functionality
@@ -202,14 +206,18 @@ function handleCardSelection(evt) {
     computerDiscard.forEach((num, idx) => {
       const card = evt.target.closest(`#CD${idx}`)
       if (card != null) {
-        playerPickUpSelection.push(computerDiscard[parseInt(card.id.slice(2))])
+        if (!playerPickUpSelection.includes(computerDiscard[parseInt(card.id.slice(2))])) {
+          playerPickUpSelection.push(computerDiscard[parseInt(card.id.slice(2))])
+        }
       } 
     })
   } else if (turn != 1 && step === 'pick-up') {
     playerDiscard.forEach((num, idx) => {
       const card = evt.target.closest(`#PD${idx}`)
       if (card != null) {
-        computerPickUpSelection.push(playerDiscard[parseInt(card.id.slice(2))])
+        if (!computerPickUpSelection.includes(playerDiscard[parseInt(card.id.slice(2))])) {
+          computerPickUpSelection.push(playerDiscard[parseInt(card.id.slice(2))])
+        }
       }
     })
   } 
