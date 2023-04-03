@@ -15,7 +15,7 @@ let playerHand = []
 let playerDiscardSelection = [] //temporary array
 let playerPickUpSelection = [] //temporary array
 let playerDiscard = []
-let step, round, turn, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints, roundWinner, winner
+let step, round, turn, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints, roundWinnerText, winner, gameWinnerText
 
 
 /*---- Cached Element References ----*/
@@ -370,9 +370,10 @@ function handleCompare() {
   nextRoundBtnEl.disabled = false
   gameStep()
   roundPoints()
-  determineRoundWinner()
-  updateMessage()
   gamePoints()
+  determineRoundWinner()
+  determineGameWinner()
+  updateMessage()
   updateScoreboard()
 }
 
@@ -449,9 +450,19 @@ function roundPoints() {
 
 function determineRoundWinner() {
   if (playerRoundPoints < computerRoundPoints) {
-    roundWinner = 'Player 1'
+    roundWinnerText = 'Player 1'
   } else {
-    roundWinner = 'Player 2'
+    roundWinnerText = 'Player 2'
+  }
+}
+
+function determineGameWinner() {
+  if (playerTotalPoints >= 100) {
+    winner = true
+    gameWinnerText = 'Player 2'
+  } else if (computerTotalPoints >= 100) {
+    winner = true
+    gameWinnerText = 'Player 1'
   }
 }
 
@@ -515,13 +526,12 @@ function updateMessage () {
     messageEl.textContent = `${turnText}'s Turn`
     roundMessageEl.textContent = `Round ${round}`
   } else if (!winner && round > 0 && step === 'compare-hands') {
-    messageEl.textContent = `${roundWinner} Wins`
+    messageEl.textContent = `${roundWinnerText} Wins`
     roundMessageEl.textContent = `Round ${round}`
+  } else if (winner && step === 'compare-hands') {
+    messageEl.textContent = `${gameWinnerText} is the WINNER!!`
+    roundMessageEl.textContent = `Game Over on Round ${round}`
   }
-  // else if (winner) {
-  //   messageEl.textContent = `We have a winner!!`
-  //   roundMessageEl.textContent = `Round ${round}`
-  // }
 }
 
 function updateScoreboard() {
