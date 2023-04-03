@@ -34,8 +34,7 @@ const discardBtnEl = document.getElementById('discard')
 const pickUpBtnEl = document.getElementById('pick-up-card')
 const compareBtnEl = document.getElementById('compare-hands')
 const nextRoundBtnEl = document.getElementById('next-round')
-
-// const resetBtnEl = document.getElementById('reset')
+const resetBtnEl = document.getElementById('reset')
 
 //message element
 const messageEl = document.getElementById("message")
@@ -51,7 +50,7 @@ discardBtnEl.addEventListener('click', handleDiscard)
 pickUpBtnEl.addEventListener('click', handlePickUp)
 compareBtnEl.addEventListener('click', handleCompare)
 nextRoundBtnEl.addEventListener('click', handleNextRound)
-// resetBtnEl.addEventListener('click', init)
+resetBtnEl.addEventListener('click', init)
 
 //Card Selection event listeners
 document.addEventListener('click', handleCardSelection)
@@ -67,12 +66,13 @@ init()
 // Initialize deck with array of 52 cards 
 function init(){
   refillDeck()
+  dealBtnEl.disabled = false
   discardBtnEl.disabled = true
   pickUpBtnEl.disabled = true
   compareBtnEl.disabled = true
   nextRoundBtnEl.disabled = true
-  computerHand = []
-  playerHand = []
+  clearPlayersHandContainers()
+  clearPlayersDiscardContainer()
   turn = 1
   round = 0
   winner = false
@@ -561,6 +561,22 @@ function gameStep() {
   }
 }
 
+function clearPlayersHandContainers() {
+  playerHandContainerEl.innerHTML = ''
+  playerHand = []
+  computerHandContainerEl.innerHTML = ''
+  computerHand = []
+}
+
+//this is for game reset
+function clearPlayersDiscardContainer() {
+  computerDiscardContainerEl.innerHTML = ''
+  computerDiscard = []
+  playerDiscardContainerEl.innerHTML = ''
+  playerDiscard = []
+}
+
+//this is for in game discard container clearing
 function clearDiscardContainer() {
   if (turn === 1) {
     computerDiscardContainerEl.innerHTML = ''
@@ -569,13 +585,6 @@ function clearDiscardContainer() {
     playerDiscardContainerEl.innerHTML = ''
     playerDiscard = []
   }
-}
-
-function clearPlayersHandContainers() {
-  playerHandContainerEl.innerHTML = ''
-  playerHand = []
-  computerHandContainerEl.innerHTML = ''
-  computerHand = []
 }
 
 /*-------------------------- END --------------------------*/
