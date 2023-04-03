@@ -15,7 +15,7 @@ let playerHand = []
 let playerDiscardSelection = [] //temporary array
 let playerPickUpSelection = [] //temporary array
 let playerDiscard = []
-let cardToRemove, step, round, turn, winner // understand this concept from lecture
+let cardToRemove, step, round, turn, playerPoints, computerPoints, winner // understand this concept from lecture
 
 
 /*---- Cached Element References ----*/
@@ -31,13 +31,15 @@ const playerDiscardContainerEl = document.getElementById('player-discard-contain
 //button elements
 const dealBtnEl = document.getElementById('deal')
 const discardBtnEl = document.getElementById('discard')
-const compareBtnEl = document.getElementById('compare-hands')
 const pickUpBtnEl = document.getElementById('pick-up-card')
+const compareBtnEl = document.getElementById('compare-hands')
+const nextRoundBtnEl = document.getElementById('next-round')
 
 // const resetBtnEl = document.getElementById('reset')
 
 //message element
 const messageEl = document.getElementById("message")
+const roundMessageEl= document.getElementById("round-message")
 
 
 /*--------- Event Listeners ---------*/
@@ -46,15 +48,11 @@ dealBtnEl.addEventListener('click', handleDeal)
 discardBtnEl.addEventListener('click', handleDiscard)
 pickUpBtnEl.addEventListener('click', handlePickUp)
 compareBtnEl.addEventListener('click', handleCompare)
+nextRoundBtnEl.addEventListener('click', handleNextRound)
 // resetBtnEl.addEventListener('click', init)
 
-//playerHand-Discard Selection event listener
+//Card Selection event listeners
 document.addEventListener('click', handleCardSelection)
-
-//player Pick-Up Selection event listener
-// document.addEventListener('click', handlePickUpSelection)
-
-//deck event listener
 deckEl.addEventListener('click', handleDeckPickUp)
 
 
@@ -70,12 +68,15 @@ function init(){
   discardBtnEl.disabled = true
   pickUpBtnEl.disabled = true
   compareBtnEl.disabled = true
+  nextRoundBtnEl.disabled = true
   computerHand = []
   playerHand = []
   turn = 1
-  round = 1
+  round = 0
   winner = false
   step = 'New Game'
+  playerPoints = 0
+  computerPoints = 0
   updateMessage()
 }
 
@@ -100,7 +101,7 @@ function handleDeal(){
     } 
   dealBtnEl.disabled = true
   discardBtnEl.disabled = false
-  round = 1
+  roundCount()
   updateMessage()
   handVisibility()
   gameStep()
@@ -354,14 +355,34 @@ function compareEnable() {
   }
 }
 
+//NEED TO CALL POINTS / WINNING FUNCTIONALITY IN THE COMPARE HAND FUNCTION
 function handleCompare() {
   clearDiscardContainer()
   renderPlayerHand()
   renderComputerHand()
   discardBtnEl.disabled = true
-  
+  compareBtnEl.disabled = true
+  nextRoundBtnEl.disabled = false
 }
 
+/*-------------------------- END --------------------------*/
+
+/*------------- Points / Winning Functionality ------------*/
+
+// function 
+
+/*-------------------------- END --------------------------*/
+
+/*--------------- Next Round Functionality ----------------*/
+
+function handleNextRound() {
+  compareBtnEl.disabled = true
+  clearPlayersHandContainers()
+  switchPlayerTurn()
+  updateMessage()
+  dealBtnEl.disabled = false
+  nextRoundBtnEl.disabled = true
+}
 
 /*-------------------------- END --------------------------*/
 
@@ -382,10 +403,13 @@ function updateMessage () {
   let turnText = turn === 1 ? `Player 1` : `Player 2`
   if (!winner && round === 0) {
     messageEl.textContent = `Game On! Click Deal`
+    roundMessageEl.textContent = `Round ${round}`
   } else if (!winner && round > 0) {
     messageEl.textContent = `${turnText}'s Turn`
+    roundMessageEl.textContent = `Round ${round}`
   } else if (winner) {
     messageEl.textContent = `We have a winner!!`
+    roundMessageEl.textContent = `Round ${round}`
   }
 }
 
@@ -398,7 +422,7 @@ function switchPlayerTurn() {
 }
 
 function roundCount() {
-  round += 1
+  round ++
 }
 
 function gameStep() {
@@ -409,7 +433,7 @@ function gameStep() {
   }
 }
 
-function clearDiscardContainer () {
+function clearDiscardContainer() {
   if (turn === 1) {
     computerDiscardContainerEl.innerHTML = ''
     computerDiscard = []
@@ -417,6 +441,13 @@ function clearDiscardContainer () {
     playerDiscardContainerEl.innerHTML = ''
     playerDiscard = []
   }
+}
+
+function clearPlayersHandContainers() {
+  playerHandContainerEl.innerHTML = ''
+  playerHand = []
+  computerHandContainerEl.innerHTML = ''
+  computerHand = []
 }
 
 /*-------------------------- END --------------------------*/
