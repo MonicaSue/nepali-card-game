@@ -15,7 +15,7 @@ let playerHand = []
 let playerDiscardSelection = [] //temporary array
 let playerPickUpSelection = [] //temporary array
 let playerDiscard = []
-let cardToRemove, step, round, turn, playerPoints, computerPoints, winner // understand this concept from lecture
+let step, round, turn, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints, roundWinner, winner
 
 
 /*---- Cached Element References ----*/
@@ -77,8 +77,10 @@ function init(){
   round = 0
   winner = false
   step = 'New Game'
-  playerPoints = 0
-  computerPoints = 0
+  playerTotalPoints = 0
+  playerRoundPoints = 0
+  computerTotalPoints = 0
+  computerRoundPoints = 0
   updateMessage()
   updateScoreboard()
 }
@@ -104,10 +106,10 @@ function handleDeal(){
     } 
   dealBtnEl.disabled = true
   discardBtnEl.disabled = false
+  gameStep()
   roundCount()
   updateMessage()
   handVisibility()
-  gameStep()
 }
 
 /*-------------------------- END --------------------------*/
@@ -317,11 +319,11 @@ function handlePickUp () {
   pickUpBtnEl.disabled = true
   discardBtnEl.disabled = false
   clearDiscardContainer()
+  gameStep()
   switchPlayerTurn()
   updateMessage()
   handVisibility()
   compareEnable()
-  gameStep()
 }
 
 /*-------------------------- END --------------------------*/
@@ -360,22 +362,25 @@ function compareEnable() {
 
 //NEED TO CALL POINTS / WINNING FUNCTIONALITY IN THE COMPARE HAND FUNCTION
 function handleCompare() {
-  gameStep()
   clearDiscardContainer()
   renderPlayerHand()
   renderComputerHand()
-  points()
-  updateScoreboard()
   discardBtnEl.disabled = true
   compareBtnEl.disabled = true
   nextRoundBtnEl.disabled = false
+  gameStep()
+  roundPoints()
+  determineRoundWinner()
+  updateMessage()
+  gamePoints()
+  updateScoreboard()
 }
 
 /*-------------------------- END --------------------------*/
 
 /*------------- Points / Winning Functionality ------------*/
 
-function points() {
+function gamePoints() {
   let playerTotal = 0
     playerHand.forEach(playerCard => {
       let playerCardName = playerCard.slice(1)
@@ -395,16 +400,58 @@ function points() {
       })
     })
   if (playerTotal < computerTotal) {
-    playerPoints += 0
-    computerPoints += computerTotal
+    playerTotalPoints += 0
+    computerTotalPoints += computerTotal
   } else if (computerTotal < playerTotal) {
-    computerPoints += 0
-    playerPoints += playerTotal
+    computerTotalPoints += 0
+    playerTotalPoints += playerTotal
   } else if (turn === 1 && playerTotal >= computerTotal) {
-    playerPoints += 25 + playerTotal
-    computerPoints += 0
+    playerTotalPoints += 25 + playerTotal
+    computerTotalPoints += 0
   } else if (turn != 1 && computerTotal >= playerTotal) {
-    computerPoints += 25 + playerTotal
+    computerTotalPoints += 25 + playerTotal
+  }
+}
+
+function roundPoints() {
+  let playerHandValue = 0
+  playerHand.forEach(playerCard => {
+    let playerCardName = playerCard.slice(1)
+    cards.forEach(card => {
+      if (card.name === playerCardName) {
+        playerHandValue += card.value
+      }
+    })
+  })
+  let computerHandValue = 0
+  computerHand.forEach(computerCard => {
+    let computerCardName = computerCard.slice(1)
+    cards.forEach(card => {
+      if (card.name === computerCardName) {
+        computerHandValue += card.value
+      }
+    })
+  })
+  if (playerHandValue < computerHandValue) {
+    playerRoundPoints = 0
+    computerRoundPoints = computerHandValue
+  } else if (computerHandValue < playerHandValue) {
+    computerRoundPoints = 0
+    playerRoundPoints = playerHandValue
+  } else if (turn === 1 && playerHandValue >= computerHandValue) {
+    playerRoundPoints = 25 + playerHandValue
+    computerRoundPoints = 0
+  } else if (turn != 1 && computerHandValue >= playerHandValue) {
+    computerRoundPoints = 25 + computerHandValue
+    playerRoundPoints = 0
+  }
+}
+
+function determineRoundWinner() {
+  if (playerRoundPoints < computerRoundPoints) {
+    roundWinner = 'Player 1'
+  } else {
+    roundWinner = 'Player 2'
   }
 }
 
@@ -420,6 +467,24 @@ function handleNextRound() {
   updateMessage()
   dealBtnEl.disabled = false
   nextRoundBtnEl.disabled = true
+    let playerTotal = 0
+    playerHand.forEach(playerCard => {
+      let playerCardName = playerCard.slice(1)
+      cards.forEach(card => {
+        if (card.name === playerCardName) {
+          playerTotal += card.value
+        }
+      })
+    })
+  let computerTotal = 0
+    computerHand.forEach(computerCard => {
+      let computerCardName = computerCard.slice(1)
+      cards.forEach(card => {
+        if (card.name === computerCardName) {
+          computerTotal += card.value
+        }
+      })
+    })
 }
 
 /*-------------------------- END --------------------------*/
@@ -446,18 +511,22 @@ function updateMessage () {
   if (!winner && round === 0) {
     messageEl.textContent = `Game On! Click Deal`
     roundMessageEl.textContent = ``
-  } else if (!winner && round > 0) {
+  } else if (!winner && round > 0 && step != 'compare-hands') {
     messageEl.textContent = `${turnText}'s Turn`
     roundMessageEl.textContent = `Round ${round}`
-  } else if (winner) {
-    messageEl.textContent = `We have a winner!!`
+  } else if (!winner && round > 0 && step === 'compare-hands') {
+    messageEl.textContent = `${roundWinner} Wins`
     roundMessageEl.textContent = `Round ${round}`
   }
+  // else if (winner) {
+  //   messageEl.textContent = `We have a winner!!`
+  //   roundMessageEl.textContent = `Round ${round}`
+  // }
 }
 
 function updateScoreboard() {
-  playerPointMessageEl.textContent = `${playerPoints}`
-  computerPointMessageEl.textContent = `${computerPoints}`
+  playerPointMessageEl.textContent = `${playerTotalPoints}`
+  computerPointMessageEl.textContent = `${computerTotalPoints}`
 }
 
 function switchPlayerTurn() {
