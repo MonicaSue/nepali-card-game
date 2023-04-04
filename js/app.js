@@ -317,6 +317,7 @@ const resetBtnEl = document.getElementById('reset')
 
 const messageEl = document.getElementById("message")
 const roundMessageEl = document.getElementById("round-message")
+const licenseMessageEl = document.getElementById("license-message")
 const playerPointMessageEl = document.getElementById("player-points")
 const computerPointMessageEl = document.getElementById("computer-points")
 
@@ -482,7 +483,7 @@ function handleCardSelection(evt) {
       }
     })
     // trying to see if I can add the discard pick up functionality
-  } else if (turn === 1 && step === 'pick-up') {
+  } else if (turn === 1 && step === 'pick-up' && playerLicense === true) {
     computerDiscard.forEach((num, idx) => {
       const card = evt.target.closest(`#CD${idx}`)
       if (card != null) {
@@ -492,7 +493,7 @@ function handleCardSelection(evt) {
         }
       } 
     })
-  } else if (turn != 1 && step === 'pick-up') {
+  } else if (turn != 1 && step === 'pick-up' && computerLicense === true) {
     playerDiscard.forEach((num, idx) => {
       const card = evt.target.closest(`#PD${idx}`)
       if (card != null) {
@@ -501,6 +502,20 @@ function handleCardSelection(evt) {
           evt.target.classList.add('selection')
         }
       }
+    })
+  } else if (turn === 1 && step === 'pick-up' && playerLicense === false) {
+    computerDiscard.forEach((num, idx) => {
+      const card = evt.target.closest(`#CD${idx}`)
+      if (card != null) {
+        noLicenseAlert()
+      } 
+    })
+  } else if (turn != 1 && step === 'pick-up' && computerLicense === false) {
+    playerDiscard.forEach((num, idx) => {
+      const card = evt.target.closest(`#PD${idx}`)
+      if (card != null) {
+        noLicenseAlert()
+      } 
     })
   } 
 }
@@ -536,6 +551,7 @@ function handleDiscard() {
   gameStep()
   compareBtnEl.disabled = true
   checkLicense()
+  updateLicenseMessage()
 }
 
 function renderDiscard() {
@@ -788,6 +804,10 @@ function checkGameWinner() {
   }
 }
 
+function updateScoreboard() {
+  playerPointMessageEl.textContent = `${playerTotalPoints}`
+  computerPointMessageEl.textContent = `${computerTotalPoints}`
+}
 
 
 /*----------------- License Functionality -----------------*/
@@ -801,14 +821,28 @@ function checkLicense() {
     })
   } else {
     licenseCombos.forEach(licenseCombo => {
-      if (licenseCombo.every((card) => playerDiscard.includes(card))) {
+      if (licenseCombo.every((card) => computerDiscard.includes(card))) {
         computerLicense = true
       }
     })
   }
 }
 
+function updateLicenseMessage() {
+  if (playerLicense === true & computerLicense === true) {
+    licenseMessageEl.textContent = `Player 1 & 2 Have License`
+  } else if (playerLicense === true & computerLicense === false) {
+    licenseMessageEl.textContent = `Player 1 Has License`
+  } else if (playerLicense === false & computerLicense === true) {
+    licenseMessageEl.textContent = `Player 2 Has License`
+  } else {
+    licenseMessageEl.textContent = ``
+  }
+}
 
+function noLicenseAlert() {
+  alert(`You do not have license! Select card from deck to pick up!`)
+}
 
 /*-------------------- Other Functions --------------------*/
 
@@ -827,7 +861,7 @@ function handVisibility() {
   }
 }
 
-function updateMessage () {
+function updateMessage() {
   let turnText = turn === 1 ? `Player 1` : `Player 2`
   if (!winner && round === 0) {
     messageEl.textContent = `Game On! Click Deal`
@@ -842,11 +876,6 @@ function updateMessage () {
     messageEl.textContent = `${gameWinnerText} is the WINNER!!`
     roundMessageEl.textContent = `Game Over on Round ${round}`
   }
-}
-
-function updateScoreboard() {
-  playerPointMessageEl.textContent = `${playerTotalPoints}`
-  computerPointMessageEl.textContent = `${computerTotalPoints}`
 }
 
 function switchPlayerTurn() {
