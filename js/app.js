@@ -390,6 +390,7 @@ function handleDeal(){
   gameStep()
   roundCount()
   updateMessage()
+  updateLicenseMessage()
   handVisibility()
 }
 
@@ -507,14 +508,14 @@ function handleCardSelection(evt) {
     computerDiscard.forEach((num, idx) => {
       const card = evt.target.closest(`#CD${idx}`)
       if (card != null) {
-        noLicenseAlert()
+        card.style.cursor = 'not-allowed'
       } 
     })
   } else if (turn != 1 && step === 'pick-up' && computerLicense === false) {
     playerDiscard.forEach((num, idx) => {
       const card = evt.target.closest(`#PD${idx}`)
       if (card != null) {
-        noLicenseAlert()
+        card.style.cursor = 'not-allowed'
       } 
     })
   } 
@@ -840,9 +841,6 @@ function updateLicenseMessage() {
   }
 }
 
-function noLicenseAlert() {
-  alert(`You do not have license! Select card from deck to pick up!`)
-}
 
 /*-------------------- Other Functions --------------------*/
 
