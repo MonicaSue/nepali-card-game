@@ -470,6 +470,10 @@ function handleCardSelection(evt) {
         if (!playerDiscardSelection.includes(playerHand[parseInt(card.id.slice(1))])) {
           playerDiscardSelection.push(playerHand[parseInt(card.id.slice(1))])
           evt.target.classList.add('selection')
+        } else {
+          let cardToRemove = playerDiscardSelection.indexOf(playerHand[parseInt(card.id.slice(1))])
+          playerDiscardSelection.splice(cardToRemove, 1)
+          evt.target.classList.remove('selection')
         }
       } 
     })
@@ -480,10 +484,13 @@ function handleCardSelection(evt) {
         if (!computerDiscardSelection.includes(computerHand[parseInt(card.id.slice(1))])) {
           computerDiscardSelection.push(computerHand[parseInt(card.id.slice(1))])
           evt.target.classList.add('selection')
+        } else {
+          let cardToRemove = computerDiscardSelection.indexOf(computerHand[parseInt(card.id.slice(1))])
+          playerDiscardSelection.splice(cardToRemove, 1)
+          evt.target.classList.remove('selection')
         }
       }
     })
-    // trying to see if I can add the discard pick up functionality
   } else if (turn === 1 && step === 'pick-up' && playerLicense === true) {
     computerDiscard.forEach((num, idx) => {
       const card = evt.target.closest(`#CD${idx}`)

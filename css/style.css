@@ -1,6 +1,8 @@
-/* :root {
-  color-scheme: dark;
-} */
+:root {
+  --titleFont: 'Cinzel Decorative'
+
+  /* color-scheme: dark; */
+}
 
 body {
   background-image: url('/assets/images/annapurna-nepal-trail-background.png');
@@ -9,17 +11,25 @@ body {
   background-position: center;
 }
 
-
-/* .background-image {
-  background-image: url(./assets/images/Tibetan-Flags-at-Annapurna-Base-Camp.png);
-  /* background-color: #e1b382; */
-
-
-h1, h2, h4, h5 {
+h1 {
+  margin-top: 30px;
+  font-family: var(--titleFont);
+  font-weight: 600;
+  color: black;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+h2, h4, h5 {
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   /* background-color: #ccaa89; */
 }
 
@@ -39,7 +49,7 @@ main {
 }
 
 .card.selection {
-  border: 0.15em solid #ca9f32;
+  border: 0.15em solid #06d417;
 }
 
 .card.shadow {
@@ -100,6 +110,7 @@ button {
   grid-template-columns: auto auto;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
   padding: 10px;
 }
 
@@ -109,7 +120,8 @@ button {
   align-items: center;
   font-size: 17px;
   font-weight: 600;
-  padding: 8px;
+  text-align: center;
+  padding: 10px 35px;
   background-color: rgba(239, 224, 212, 0.8);
   border: 1px solid rgba(133, 111, 89, 1);
 }
