@@ -2,13 +2,18 @@
   color-scheme: dark;
 } */
 
-.background-image {
-  background-image: url(/assets/images/nepal-painting.jpeg);
+body {
+  background-image: url('/assets/images/annapurna-nepal-trail-background.png');
   background-size: cover;
-  /* background-attachment: fixed;
-  background-position: center; */
-  /* background-color: #e1b382; */
+  background-attachment: fixed;
+  background-position: center;
 }
+
+
+/* .background-image {
+  background-image: url(./assets/images/Tibetan-Flags-at-Annapurna-Base-Camp.png);
+  /* background-color: #e1b382; */
+
 
 h1, h2, h4, h5 {
   text-align: center;
@@ -91,20 +96,26 @@ button {
 }
 
 .scoreboard {
-  display: inline-grid;
-  background-color: #ccaa89;
+  display: grid;
   grid-template-columns: auto auto;
-  padding: 10px;
   justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
 .scoreboard-item {
-  border: 1px solid black;
-  padding: 20px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  padding: 10px;
+  background-color: rgba(204, 170, 137, .8);
+  border: 1px solid rgba(133, 111, 89, 1);
 }
 
 
 #reset {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
