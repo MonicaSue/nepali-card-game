@@ -1,9 +1,21 @@
+/* :root {
+  color-scheme: dark;
+} */
+
+.background-image {
+  background-image: url(/assets/images/nepal-painting.jpeg);
+  background-size: cover;
+  /* background-attachment: fixed;
+  background-position: center; */
+  /* background-color: #e1b382; */
+}
 
 h1, h2, h4, h5 {
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* background-color: #ccaa89; */
 }
 
 main {
@@ -61,13 +73,15 @@ main {
 
 
 button {
+  background-color: #ccaa89;
   margin: 8px; */
   cursor: pointer;
   padding: 10px 16px;
   font-size: 14px;
   border-radius: 8px;
-  border: none;
   align-items: center; 
+  border: 5px outset #c89666;
+  font-weight: 600;
 }
 
 #movement {
@@ -78,7 +92,7 @@ button {
 
 .scoreboard {
   display: inline-grid;
-  background-color: white;
+  background-color: #ccaa89;
   grid-template-columns: auto auto;
   padding: 10px;
   justify-content: center;
