@@ -338,6 +338,7 @@ init()
 
 function init(){
   refillDeck()
+  deckEl.classList.remove('selection')
   dealBtnEl.disabled = false
   discardBtnEl.disabled = true
   pickUpBtnEl.disabled = true
@@ -461,6 +462,7 @@ function handleCardSelection(evt) {
       if (card != null) {
         if (!playerDiscardSelection.includes(playerHand[parseInt(card.id.slice(1))])) {
           playerDiscardSelection.push(playerHand[parseInt(card.id.slice(1))])
+          evt.target.classList.add('selection')
         }
       } 
     })
@@ -470,6 +472,7 @@ function handleCardSelection(evt) {
       if (card != null) {
         if (!computerDiscardSelection.includes(computerHand[parseInt(card.id.slice(1))])) {
           computerDiscardSelection.push(computerHand[parseInt(card.id.slice(1))])
+          evt.target.classList.add('selection')
         }
       }
     })
@@ -480,6 +483,7 @@ function handleCardSelection(evt) {
       if (card != null) {
         if (!playerPickUpSelection.includes(computerDiscard[parseInt(card.id.slice(2))])) {
           playerPickUpSelection.push(computerDiscard[parseInt(card.id.slice(2))])
+          evt.target.classList.add('selection')
         }
       } 
     })
@@ -489,6 +493,7 @@ function handleCardSelection(evt) {
       if (card != null) {
         if (!computerPickUpSelection.includes(playerDiscard[parseInt(card.id.slice(2))])) {
           computerPickUpSelection.push(playerDiscard[parseInt(card.id.slice(2))])
+          evt.target.classList.add('selection')
         }
       }
     })
@@ -572,6 +577,7 @@ function appendComputerDiscard(computerDiscardCard, idx) {
 /*------------------- Pick-Up Functions -------------------*/
 
 function handleDeckPickUp() {
+  deckEl.classList.add('selection')
   if (deck.length > 0) {
     if (turn === 1) {
       let randIdx = Math.floor(Math.random() * deck.length)
@@ -595,7 +601,8 @@ function handlePickUp () {
     computerHand.push(computerPickUpSelection[0])
     renderComputerHand()
     computerPickUpSelection = []
-    }
+  }
+  deckEl.classList.remove('selection')
   pickUpBtnEl.disabled = true
   discardBtnEl.disabled = false
   clearDiscardContainer()
@@ -651,7 +658,7 @@ function handleCompare() {
   roundPoints()
   gamePoints()
   determineRoundWinner()
-  determineGameWinner()
+  checkGameWinner()
   updateMessage()
   updateScoreboard()
 }
@@ -763,13 +770,15 @@ function determineRoundWinner() {
   }
 }
 
-function determineGameWinner() {
+function checkGameWinner() {
   if (playerTotalPoints >= 100) {
     winner = true
     gameWinnerText = 'Player 2'
+    nextRoundBtnEl.disabled = true
   } else if (computerTotalPoints >= 100) {
     winner = true
     gameWinnerText = 'Player 1'
+    nextRoundBtnEl.disabled = true
   }
 }
 
