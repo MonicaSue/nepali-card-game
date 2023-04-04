@@ -1,4 +1,5 @@
 /*------------ Constants ------------*/
+
 const cards = [
   { name: 'A', value: 1 }, { name: '02', value: 2 }, { name: '03', value: 3 }, { name: '04', value: 4 }, { name: '05', value: 5 }, { name: '06', value: 6 }, { name: '07', value: 7}, { name: '08', value: 8 }, { name: '09', value: 9 }, { name: '10', value: 10 }, { name: 'J', value: 10}, { name: 'Q', value: 10 }, { name: 'K', value: 10}
 ]
@@ -277,8 +278,11 @@ const licenseCombos = [
   ["c02","s02"],
 ]
 
+
 /*------------ Variables ------------*/
+
 let deck = []
+
 let computerHand = []
 let computerDiscard = []
 let computerDiscardSelection = [] //temporary array
@@ -288,11 +292,12 @@ let playerHand = []
 let playerDiscardSelection = [] //temporary array
 let playerPickUpSelection = [] //temporary array
 let playerDiscard = []
+
 let step, round, turn, playerLicense, computerLicense, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints, roundWinnerText, winner, gameWinnerText
 
 
 /*---- Cached Element References ----*/
-//card elements
+
 const deckEl = document.getElementById('deck')
 
 const computerHandContainerEl = document.getElementById('computer-hand-container')
@@ -301,7 +306,7 @@ const computerDiscardContainerEl = document.getElementById('computer-discard-con
 const playerHandContainerEl = document.getElementById('player-hand-container')
 const playerDiscardContainerEl = document.getElementById('player-discard-container')
 
-//button elements
+
 const dealBtnEl = document.getElementById('deal')
 const discardBtnEl = document.getElementById('discard')
 const pickUpBtnEl = document.getElementById('pick-up-card')
@@ -309,7 +314,7 @@ const compareBtnEl = document.getElementById('compare-hands')
 const nextRoundBtnEl = document.getElementById('next-round')
 const resetBtnEl = document.getElementById('reset')
 
-//message element
+
 const messageEl = document.getElementById("message")
 const roundMessageEl = document.getElementById("round-message")
 const playerPointMessageEl = document.getElementById("player-points")
@@ -325,7 +330,7 @@ compareBtnEl.addEventListener('click', handleCompare)
 nextRoundBtnEl.addEventListener('click', handleNextRound)
 resetBtnEl.addEventListener('click', init)
 
-//Card Selection event listeners
+
 document.addEventListener('click', handleCardSelection)
 deckEl.addEventListener('click', handleDeckPickUp)
 
@@ -387,7 +392,7 @@ function handleDeal(){
   handVisibility()
 }
 
-/*-------------------------- END --------------------------*/
+
 
 /*------------- Append & Render Hand Functions ------------*/
 
@@ -451,7 +456,7 @@ function renderHiddenComputerHand () {
   })
 }
 
-/*-------------------------- END --------------------------*/
+
 
 /*---------------- Card Selector Function -----------------*/
 
@@ -500,7 +505,7 @@ function handleCardSelection(evt) {
   } 
 }
 
-/*-------------------------- END --------------------------*/
+
 
 /*------------------- Discard Functions -------------------*/
 
@@ -530,6 +535,7 @@ function handleDiscard() {
   }
   gameStep()
   compareBtnEl.disabled = true
+  checkLicense()
 }
 
 function renderDiscard() {
@@ -572,7 +578,7 @@ function appendComputerDiscard(computerDiscardCard, idx) {
   }
 }
 
-/*-------------------------- END --------------------------*/
+
 
 /*------------------- Pick-Up Functions -------------------*/
 
@@ -613,7 +619,7 @@ function handlePickUp () {
   compareEnable()
 }
 
-/*-------------------------- END --------------------------*/
+
 
 /*---------- Compare Hands & Next Round Functions ---------*/
 
@@ -691,7 +697,7 @@ function handleNextRound() {
     })
 }
 
-/*-------------------------- END --------------------------*/
+
 
 /*------------- Points / Winning Functionality ------------*/
 
@@ -782,7 +788,7 @@ function checkGameWinner() {
   }
 }
 
-/*-------------------------- END --------------------------*/
+
 
 /*----------------- License Functionality -----------------*/
 
@@ -802,7 +808,7 @@ function checkLicense() {
   }
 }
 
-/*-------------------------- END --------------------------*/
+
 
 /*-------------------- Other Functions --------------------*/
 
@@ -892,9 +898,3 @@ function clearDiscardContainer() {
 }
 
 /*-------------------------- END --------------------------*/
-
-
-// function highlight 
-// target.classList.add('selection')
-// target.classList.remove('selection')
-
