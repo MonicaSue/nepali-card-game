@@ -3,6 +3,279 @@ const cards = [
   { name: 'A', value: 1 }, { name: '02', value: 2 }, { name: '03', value: 3 }, { name: '04', value: 4 }, { name: '05', value: 5 }, { name: '06', value: 6 }, { name: '07', value: 7}, { name: '08', value: 8 }, { name: '09', value: 9 }, { name: '10', value: 10 }, { name: 'J', value: 10}, { name: 'Q', value: 10 }, { name: 'K', value: 10}
 ]
 
+const licenseCombos = [
+  ["dA","dQ","dK","dJ","d10"],
+  ["dA","dQ","dK","dJ"],
+  ["dA","dQ","dK"],
+  ["dQ","dK","dJ","d10","d09"],
+  ["dQ","dK","dJ","d10"],
+  ["dQ","dK","dJ"],
+  ["dQ","dJ","d10","d09","d08"],
+  ["dQ","dJ","d10","d09"],
+  ["dQ","dJ","d10"],
+  ["dJ","d10","d09","d08","d07"],
+  ["dJ","d10","d09","d08"],
+  ["dJ","d10","d09"],
+  ["d10","d09","d08","d07","d06"],
+  ["d10","d09","d08","d07"],
+  ["d10","d09","d08"],
+  ["d09","d08","d07","d06","d05"],
+  ["d09","d08","d07","d06"],
+  ["d09","d08","d07"],
+  ["d08","d07","d06","d05","d04"],
+  ["d08","d07","d06","d05"],
+  ["d08","d07","d06"],
+  ["d07","d06","d05","d04","d03"],
+  ["d07","d06","d05","d04"],
+  ["d07","d06","d05"],
+  ["d06","d05","d04","d03","d02"],
+  ["d06","d05","d04","d03"],
+  ["d06","d05","d04"],
+  ["d05","d04","d03","d02","hA"],
+  ["d05","d04","d03","d02"],
+  ["d05","d04","d03"],
+  ["d04","d03","d02","dA"],
+  ["d04","d03","d02"],
+  ["hA","hQ","hK","hJ","h10"],
+  ["hA","hQ","hK","hJ"],
+  ["hA","hQ","hK"],
+  ["hQ","hK","hJ","h10","h09"],
+  ["hQ","hK","hJ","h10"],
+  ["hQ","hK","hJ"],
+  ["hQ","hJ","h10","h09","h08"],
+  ["hQ","hJ","h10","h09"],
+  ["hQ","hJ","h10"],
+  ["hJ","h10","h09","h08","h07"],
+  ["hJ","h10","h09","h08"],
+  ["hJ","h10","h09"],
+  ["h10","h09","h08","h07","h06"],
+  ["h10","h09","h08","h07"],
+  ["h10","h09","h08"],
+  ["h09","h08","h07","h06","h05"],
+  ["h09","h08","h07","h06"],
+  ["h09","h08","h07"],
+  ["h08","h07","h06","h05","h04"],
+  ["h08","h07","h06","h05"],
+  ["h08","h07","h06"],
+  ["h07","h06","h05","h04","h03"],
+  ["h07","h06","h05","h04"],
+  ["h07","h06","h05"],
+  ["h06","h05","h04","h03","h02"],
+  ["h06","h05","h04","h03"],
+  ["h06","h05","h04"],
+  ["h05","h04","h03","h02","hA"],
+  ["h05","h04","h03","h02"],
+  ["h05","h04","h03"],
+  ["h04","h03","h02","hA"],
+  ["h04","h03","h02"],
+  ["cA","cQ","cK","cJ","c10"],
+  ["cA","cQ","cK","cJ"],
+  ["cA","cQ","cK"],
+  ["cQ","cK","cJ","c10","c09"],
+  ["cQ","cK","cJ","c10"],
+  ["cQ","cK","cJ"],
+  ["cQ","cJ","c10","c09","c08"],
+  ["cQ","cJ","c10","c09"],
+  ["cQ","cJ","c10"],
+  ["cJ","c10","c09","c08","c07"],
+  ["cJ","c10","c09","c08"],
+  ["cJ","c10","c09"],
+  ["c10","c09","c08","c07","c06"],
+  ["c10","c09","c08","c07"],
+  ["c10","c09","c08"],
+  ["c09","c08","c07","c06","c05"],
+  ["c09","c08","c07","c06"],
+  ["c09","c08","c07"],
+  ["c08","c07","c06","c05","c04"],
+  ["c08","c07","c06","c05"],
+  ["c08","c07","c06"],
+  ["c07","c06","c05","c04","c03"],
+  ["c07","c06","c05","c04"],
+  ["c07","c06","c05"],
+  ["c06","c05","c04","c03","c02"],
+  ["c06","c05","c04","c03"],
+  ["c06","c05","c04"],
+  ["c05","c04","c03","c02","cA"],
+  ["c05","c04","c03","c02"],
+  ["c05","c04","c03"],
+  ["c04","c03","c02","cA"],
+  ["c04","c03","c02"],
+  ["sA","sQ","sK","sJ","s10"],
+  ["sA","sQ","sK","sJ"],
+  ["sA","sQ","sK"],
+  ["sQ","sK","sJ","s10","s09"],
+  ["sQ","sK","sJ","s10"],
+  ["sQ","sK","sJ"],
+  ["sQ","sJ","s10","s09","s08"],
+  ["sQ","sJ","s10","s09"],
+  ["sQ","sJ","s10"],
+  ["sJ","s10","s09","s08","s07"],
+  ["sJ","s10","s09","s08"],
+  ["sJ","s10","s09"],
+  ["s10","s09","s08","s07","s06"],
+  ["s10","s09","s08","s07"],
+  ["s10","s09","s08"],
+  ["s09","s08","s07","s06","s05"],
+  ["s09","s08","s07","s06"],
+  ["s09","s08","s07"],
+  ["s08","s07","s06","s05","s04"],
+  ["s08","s07","s06","s05"],
+  ["s08","s07","s06"],
+  ["s07","s06","s05","s04","s03"],
+  ["s07","s06","s05","s04"],
+  ["s07","s06","s05"],
+  ["s06","s05","s04","s03","s02"],
+  ["s06","s05","s04","s03"],
+  ["s06","s05","s04"],
+  ["s05","s04","s03","s02","sA"],
+  ["s05","s04","s03","s02"],
+  ["s05","s04","s03"],
+  ["s04","s03","s02","sA"],
+  ["s04","s03","s02"],
+  ["dA","hA","cA","sA"],
+  ["dA","hA","cA"],
+  ["dA","cA","sA"],
+  ["dA","hA","sA"],
+  ["hA","cA","sA"],
+  ["dA","hA"],
+  ["dA","cA"],
+  ["dA","sA"],
+  ["hA","cA"],
+  ["hA","sA"],
+  ["cA","sA"],
+  ["dK","hK","cK","sK"],
+  ["dK","hK","cK"],
+  ["dK","cK","sK"],
+  ["dK","hK","sK"],
+  ["hK","cK","sK"],
+  ["dK","hK"],
+  ["dK","cK"],
+  ["dK","sK"],
+  ["hK","cK"],
+  ["hK","sK"],
+  ["cK","sK"],
+  ["dQ","hQ","cQ","sQ"],
+  ["dQ","hQ","cQ"],
+  ["dQ","cQ","sQ"],
+  ["dQ","hQ","sQ"],
+  ["hQ","cQ","sQ"],
+  ["dQ","hQ"],
+  ["dQ","cQ"],
+  ["dQ","sQ"],
+  ["hQ","cQ"],
+  ["hQ","sQ"],
+  ["cQ","sQ"],
+  ["dJ","hJ","cJ","sJ"],
+  ["dJ","hJ","cJ"],
+  ["dJ","cJ","sJ"],
+  ["dJ","hJ","sJ"],
+  ["hJ","cJ","sJ"],
+  ["dJ","hJ"],
+  ["dJ","cJ"],
+  ["dJ","sJ"],
+  ["hJ","cJ"],
+  ["hJ","sJ"],
+  ["cJ","sJ"],
+  ["d10","h10","c10","s10"],
+  ["d10","h10","c10"],
+  ["d10","c10","s10"],
+  ["d10","h10","s10"],
+  ["h10","c10","s10"],
+  ["d10","h10"],
+  ["d10","c10"],
+  ["d10","s10"],
+  ["h10","c10"],
+  ["h10","s10"],
+  ["c10","s10"],
+  ["d09","h09","c09","s09"],
+  ["d09","h09","c09"],
+  ["d09","c09","s09"],
+  ["d09","h09","s09"],
+  ["h09","c09","s09"],
+  ["d09","h09"],
+  ["d09","c09"],
+  ["d09","s09"],
+  ["h09","c09"],
+  ["h09","s09"],
+  ["c09","s09"],
+  ["d08","h08","c08","s08"],
+  ["d08","h08","c08"],
+  ["d08","c08","s08"],
+  ["d08","h08","s08"],
+  ["h08","c08","s08"],
+  ["d08","h08"],
+  ["d08","c08"],
+  ["d08","s08"],
+  ["h08","c08"],
+  ["h08","s08"],
+  ["c08","s08"],
+  ["d07","h07","c07","s07"],
+  ["d07","h07","c07"],
+  ["d07","c07","s07"],
+  ["d07","h07","s07"],
+  ["h07","c07","s07"],
+  ["d07","h07"],
+  ["d07","c07"],
+  ["d07","s07"],
+  ["h07","c07"],
+  ["h07","s07"],
+  ["c07","s07"],
+  ["d06","h06","c06","s06"],
+  ["d06","h06","c06"],
+  ["d06","c06","s06"],
+  ["d06","h06","s06"],
+  ["h06","c06","s06"],
+  ["d06","h06"],
+  ["d06","c06"],
+  ["d06","s06"],
+  ["h06","c06"],
+  ["h06","s06"],
+  ["c06","s06"],
+  ["d05","h05","c05","s05"],
+  ["d05","h05","c05"],
+  ["d05","c05","s05"],
+  ["d05","h05","s05"],
+  ["h05","c05","s05"],
+  ["d05","h05"],
+  ["d05","c05"],
+  ["d05","s05"],
+  ["h05","c05"],
+  ["h05","s05"],
+  ["c05","s05"],
+  ["d04","h04","c04","s04"],
+  ["d04","h04","c04"],
+  ["d04","c04","s04"],
+  ["d04","h04","s04"],
+  ["h04","c04","s04"],
+  ["d04","h04"],
+  ["d04","c04"],
+  ["d04","s04"],
+  ["h04","c04"],
+  ["h04","s04"],
+  ["c04","s04"],
+  ["d03","h03","c03","s03"],
+  ["d03","h03","c03"],
+  ["d03","c03","s03"],
+  ["d03","h03","s03"],
+  ["h03","c03","s03"],
+  ["d03","h03"],
+  ["d03","c03"],
+  ["d03","s03"],
+  ["h03","c03"],
+  ["h03","s03"],
+  ["c03","s03"],
+  ["d02","h02","c02","s02"],
+  ["d02","h02","c02"],
+  ["d02","c02","s02"],
+  ["d02","h02","s02"],
+  ["h02","c02","s02"],
+  ["d02","h02"],
+  ["d02","c02"],
+  ["d02","s02"],
+  ["h02","c02"],
+  ["h02","s02"],
+  ["c02","s02"],
+]
 
 /*------------ Variables ------------*/
 let deck = []
@@ -15,7 +288,7 @@ let playerHand = []
 let playerDiscardSelection = [] //temporary array
 let playerPickUpSelection = [] //temporary array
 let playerDiscard = []
-let step, round, turn, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints, roundWinnerText, winner, gameWinnerText
+let step, round, turn, playerLicense, computerLicense, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints, roundWinnerText, winner, gameWinnerText
 
 
 /*---- Cached Element References ----*/
@@ -63,7 +336,6 @@ deckEl.addEventListener('click', handleDeckPickUp)
 
 init()
 
-// Initialize deck with array of 52 cards 
 function init(){
   refillDeck()
   dealBtnEl.disabled = false
@@ -75,6 +347,8 @@ function init(){
   clearPlayersDiscardContainer()
   turn = 1
   round = 0
+  playerLicense = false
+  computerLicense = false
   winner = false
   step = 'New Game'
   playerTotalPoints = 0
@@ -85,8 +359,6 @@ function init(){
   updateScoreboard()
 }
 
-// Deal random hand (5 cards) to each player
-// Deal button clicked THEN remove card from deck and pushes into player hand array + disables Deal button after
 function handleDeal(){
   if (deck.length > 0) {
     for (let index = 0; index < 5; index++) {
@@ -106,6 +378,8 @@ function handleDeal(){
     } 
   dealBtnEl.disabled = true
   discardBtnEl.disabled = false
+  playerLicense = false
+  computerLicense = false
   gameStep()
   roundCount()
   updateMessage()
@@ -116,8 +390,6 @@ function handleDeal(){
 
 /*------------- Append & Render Hand Functions ------------*/
 
-
-// Appends the player cards to the player hand container
 function appendPlayerCard(playerDealtCard, idx) {
   let playerCard = document.createElement('div')
   playerCard.className = 'card large'
@@ -336,7 +608,7 @@ function handlePickUp () {
 
 /*-------------------------- END --------------------------*/
 
-/*---------------- Compare Hands Functions ----------------*/
+/*---------- Compare Hands & Next Round Functions ---------*/
 
 function compareEnable() {
   if (turn === 1) {
@@ -368,7 +640,6 @@ function compareEnable() {
   }
 }
 
-//NEED TO CALL POINTS / WINNING FUNCTIONALITY IN THE COMPARE HAND FUNCTION
 function handleCompare() {
   clearDiscardContainer()
   renderPlayerHand()
@@ -383,6 +654,34 @@ function handleCompare() {
   determineGameWinner()
   updateMessage()
   updateScoreboard()
+}
+
+function handleNextRound() {
+  compareBtnEl.disabled = true
+  clearPlayersHandContainers()
+  refillDeck()  
+  switchPlayerTurn()
+  updateMessage()
+  dealBtnEl.disabled = false
+  nextRoundBtnEl.disabled = true
+    let playerTotal = 0
+    playerHand.forEach(playerCard => {
+      let playerCardName = playerCard.slice(1)
+      cards.forEach(card => {
+        if (card.name === playerCardName) {
+          playerTotal += card.value
+        }
+      })
+    })
+  let computerTotal = 0
+    computerHand.forEach(computerCard => {
+      let computerCardName = computerCard.slice(1)
+      cards.forEach(card => {
+        if (card.name === computerCardName) {
+          computerTotal += card.value
+        }
+      })
+    })
 }
 
 /*-------------------------- END --------------------------*/
@@ -476,34 +775,22 @@ function determineGameWinner() {
 
 /*-------------------------- END --------------------------*/
 
-/*--------------- Next Round Functionality ----------------*/
+/*----------------- License Functionality -----------------*/
 
-function handleNextRound() {
-  compareBtnEl.disabled = true
-  clearPlayersHandContainers()
-  refillDeck()  
-  switchPlayerTurn()
-  updateMessage()
-  dealBtnEl.disabled = false
-  nextRoundBtnEl.disabled = true
-    let playerTotal = 0
-    playerHand.forEach(playerCard => {
-      let playerCardName = playerCard.slice(1)
-      cards.forEach(card => {
-        if (card.name === playerCardName) {
-          playerTotal += card.value
-        }
-      })
+function checkLicense() {
+  if (turn === 1) {
+    licenseCombos.forEach(licenseCombo => {
+      if (licenseCombo.every((card) => playerDiscard.includes(card))) {
+        playerLicense = true
+      }
     })
-  let computerTotal = 0
-    computerHand.forEach(computerCard => {
-      let computerCardName = computerCard.slice(1)
-      cards.forEach(card => {
-        if (card.name === computerCardName) {
-          computerTotal += card.value
-        }
-      })
+  } else {
+    licenseCombos.forEach(licenseCombo => {
+      if (licenseCombo.every((card) => playerDiscard.includes(card))) {
+        computerLicense = true
+      }
     })
+  }
 }
 
 /*-------------------------- END --------------------------*/

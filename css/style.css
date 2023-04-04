@@ -21,6 +21,10 @@ main {
   border: 0.12em dashed #c61b1b;
 }
 
+.card.selection {
+  border: 0.15em solid #ca9f32;
+}
+
 .card.shadow {
   box-shadow: 7px 7px 7px 0 rgba(41, 41, 41, 0.95) !important;
 }
