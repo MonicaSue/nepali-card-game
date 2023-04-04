@@ -796,10 +796,12 @@ function determineRoundWinner() {
 function checkGameWinner() {
   if (playerTotalPoints >= 100) {
     winner = true
+    confetti.start(3000)
     gameWinnerText = 'Player 2'
     nextRoundBtnEl.disabled = true
   } else if (computerTotalPoints >= 100) {
     winner = true
+    confetti.start(3000)
     gameWinnerText = 'Player 1'
     nextRoundBtnEl.disabled = true
   }
