@@ -4,9 +4,9 @@
 ## [Play Game Here](https://nepali-card-game.netlify.app/)
 This card game was learned on the Annapurna trail by a local Nepali guide. I want to share this fun and easy card game to you! 
 
-## [Getting Started]
+## Getting Started
 
-### [The basics of gameplay are:]
+### General Game Play:
 * Each player is dealt 5 cards at the start of each new game and round
 * Player 1 must discard one of the following options:
   * 1 card, 
@@ -17,7 +17,7 @@ This card game was learned on the Annapurna trail by a local Nepali guide. I wan
 * Player 1's turn is over 
 * Moves to Player 2 to repeat Discard & Pick Up steps
 
-### [How to win:]
+### How to Win:
 * At the start of a player's turn, if the total value of a hand is less than or equal to 5, then the player can 'Compare Hands' to end round
 * Game will continue for multiple rounds until a player reaches 100+ penalized points
 * The player with the least amount of points wins the game
