@@ -313,6 +313,7 @@ const pickUpBtnEl = document.getElementById('pick-up-card')
 const compareBtnEl = document.getElementById('compare-hands')
 const nextRoundBtnEl = document.getElementById('next-round')
 const resetBtnEl = document.getElementById('reset')
+// const instructionsBtnEl = document.getElementById('instructions')
 
 
 const messageEl = document.getElementById("message")
@@ -320,17 +321,18 @@ const roundMessageEl = document.getElementById("round-message")
 const licenseMessageEl = document.getElementById("license-message")
 const playerPointMessageEl = document.getElementById("player-points")
 const computerPointMessageEl = document.getElementById("computer-points")
+// const instructionsMessageEl = document.getElementById("instructions-message")
 
 
 /*--------- Event Listeners ---------*/
 
 dealBtnEl.addEventListener('click', handleDeal)
-discardBtnEl.addEventListener('click', handleDiscard)
+discardBtnEl.addEventListener('click', handleDiscardCheckLicense)
 pickUpBtnEl.addEventListener('click', handlePickUp)
 compareBtnEl.addEventListener('click', handleCompare)
 nextRoundBtnEl.addEventListener('click', handleNextRound)
 resetBtnEl.addEventListener('click', init)
-
+// instructionsBtnEl.addEventListener('click', handleInstructions)
 
 document.addEventListener('click', handleCardSelection)
 deckEl.addEventListener('click', handleDeckPickUp)
@@ -354,10 +356,10 @@ function init(){
   clearPlayersDiscardContainer()
   turn = 1
   round = 0
+  step = 'New Game'
   playerLicense = false
   computerLicense = false
   winner = false
-  step = 'New Game'
   playerTotalPoints = 0
   playerRoundPoints = 0
   computerTotalPoints = 0
@@ -387,8 +389,9 @@ function handleDeal(){
   discardBtnEl.disabled = false
   playerLicense = false
   computerLicense = false
-  gameStep()
   roundCount()
+  gameStep()
+  // handleInstructions()
   updateMessage()
   updateLicenseMessage()
   handVisibility()
@@ -403,6 +406,7 @@ function appendPlayerCard(playerDealtCard, idx) {
   playerCard.className = 'card large'
   playerCard.classList.add(playerDealtCard)
   playerCard.id = `P${idx}`
+  playerCard.classList.add('animate__animated', 'animate__flipInY')
   playerHandContainerEl.appendChild(playerCard)
 }
 
@@ -417,12 +421,11 @@ function hidePlayerHand() {
   let playerCard = document.createElement('div')
   playerCard.className = 'card large'
   playerCard.classList.add('back-blue')
-  // computerCard.id = `C${idx}`
   playerHandContainerEl.appendChild(playerCard)
 }
 
 function renderHiddenPlayerHand () {
-  playerHandContainerEl.innerHTML = '' // clean state
+  playerHandContainerEl.innerHTML = ''
   playerHand.forEach((playerDealtCard, idx) => {
     hidePlayerHand(playerDealtCard, idx)
   })
@@ -447,17 +450,25 @@ function hideComputerHand() {
   let computerCard = document.createElement('div')
   computerCard.className = 'card large'
   computerCard.classList.add('back-blue')
-  // computerCard.id = `C${idx}`
   computerHandContainerEl.appendChild(computerCard)
 }
 
 function renderHiddenComputerHand () {
-  computerHandContainerEl.innerHTML = '' // clean state
+  computerHandContainerEl.innerHTML = ''
   computerHand.forEach((computerDealtCard, idx) => {
     hideComputerHand(computerDealtCard, idx)
   })
 }
 
+function handVisibility() {
+  if (turn === 1) {
+    renderPlayerHand()
+    renderHiddenComputerHand()
+  } else {
+    renderComputerHand()
+    renderHiddenPlayerHand()
+  }
+}
 
 
 /*---------------- Card Selector Function -----------------*/
@@ -532,7 +543,7 @@ function handleCardSelection(evt) {
 
 /*------------------- Discard Functions -------------------*/
 
-function handleDiscard() {
+function pushDiscard() {
   if (turn === 1) {
     playerDiscardSelection.forEach((card, idx) => {
       playerDiscard.push(card)
@@ -588,6 +599,7 @@ function appendPlayerDiscard(playerDiscardCard, idx) {
     playerDiscard.className = 'card large outline'
     playerDiscard.classList.add(playerDiscardCard)
     playerDiscard.id = `PD${idx}`
+    playerDiscard.classList.add('animate__animated', 'animate__fadeInUp')
     playerDiscardContainerEl.appendChild(playerDiscard)
   }
 }
@@ -598,10 +610,10 @@ function appendComputerDiscard(computerDiscardCard, idx) {
     computerDiscard.className = 'card large outline'
     computerDiscard.classList.add(computerDiscardCard)
     computerDiscard.id = `CD${idx}`
+    computerDiscard.classList.add('animate__animated', 'animate__fadeInDown')
     computerDiscardContainerEl.appendChild(computerDiscard)
   }
 }
-
 
 
 /*------------------- Pick-Up Functions -------------------*/
@@ -613,8 +625,7 @@ function handleDeckPickUp() {
       let randIdx = Math.floor(Math.random() * deck.length)
       let playerPickUpCard = deck.splice(randIdx, 1)[0]
       playerPickUpSelection.push(playerPickUpCard)
-    // renderPlayerHand(playerPickUpCard)
-    } else { // added this after confirming all of player 1 round 1 works
+    } else {
       let randIdx = Math.floor(Math.random() * deck.length)
       let computerPickUpCard = deck.splice(randIdx, 1)[0]
       computerPickUpSelection.push(computerPickUpCard)
@@ -627,7 +638,7 @@ function handlePickUp () {
     playerHand.push(playerPickUpSelection[0])
     renderPlayerHand()
     playerPickUpSelection = []
-  } else {//added this after confirming all of player 1 round 1 works
+  } else {
     computerHand.push(computerPickUpSelection[0])
     renderComputerHand()
     computerPickUpSelection = []
@@ -839,16 +850,76 @@ function checkLicense() {
 }
 
 function updateLicenseMessage() {
-  if (playerLicense === true & computerLicense === true) {
-    licenseMessageEl.textContent = `Player 1 & 2 Have License`
-  } else if (playerLicense === true & computerLicense === false) {
-    licenseMessageEl.textContent = `Player 1 Has License`
-  } else if (playerLicense === false & computerLicense === true) {
-    licenseMessageEl.textContent = `Player 2 Has License`
+  if (playerLicense === true && computerLicense === true) {
+    licenseMessageEl.textContent = `Player 1 & 2 Have License: Pick Up from Deck or Opponent's Discard Pile`
+  } else if (playerLicense === true && computerLicense === false) {
+    licenseMessageEl.textContent = `Player 1 Has License: Pick Up from Deck or Opponent's Discard Pile`
+  } else if (playerLicense === false && computerLicense === true) {
+    licenseMessageEl.textContent = `Player 2 Has License: Pick Up from Deck or Opponent's Discard Pile`
   } else {
     licenseMessageEl.textContent = ``
   }
 }
+
+function handleDiscardCheckLicense() {
+  if (turn === 1) {
+    if (playerDiscardSelection.length === 1) {
+      console.log('only one card')
+      pushDiscard()
+    } else if (playerDiscardSelection.length > 1) {
+      let comboBoolean = false
+      licenseCombos.forEach(licenseCombo => {
+        comboBoolean = licenseCombo.every((card) => playerDiscardSelection.includes(card)) 
+        if (comboBoolean === true) {
+          console.log('boolean check', comboBoolean)
+          pushDiscard()
+        }
+      })
+      if (comboBoolean === false) {
+        console.log('license fails')
+        playerDiscardSelection = []
+        renderPlayerHand()
+      }
+    }
+  } else {
+    if (computerDiscardSelection.length === 1) {
+      console.log('only one card')
+      pushDiscard()
+    } else if (computerDiscardSelection.length > 1) {
+      let comboBoolean = false
+      licenseCombos.forEach(licenseCombo => {
+        comboBoolean = licenseCombo.every((card) => computerDiscardSelection.includes(card)) 
+        if (comboBoolean === true) {
+          console.log('boolean check', comboBoolean)
+          pushDiscard()
+        }
+      })
+      if (comboBoolean === false) {  
+        console.log('license fails')
+        computerDiscardSelection = []
+        renderComputerHand()
+      }
+    }
+  }
+} 
+
+/*---------------------- Animations -----------------------*/
+
+function makeCardsFlipIn() {
+  computerCard.classList.add('animate__animated', 'animate__flipInY')
+  Headers.offSetHeight
+  playerCard.classList.add('animate__animated', 'animate__flipInY')
+}
+
+function makeCardsFlipOut(){
+
+}
+
+// function makeAnimationHeaderGo() {
+//   instructionsMessageEl.classList.remove('animate__animated', 'animate__slideInRight')
+//   Headers.offsetHeight
+//   instructionsMessageEl.classList.add('animate__animated', 'animate__slideInRight')
+// }
 
 
 /*-------------------- Other Functions --------------------*/
@@ -856,16 +927,6 @@ function updateLicenseMessage() {
 //NEED TO UPDATE: DELAYED SWITCH
 function refillDeck() {
   deck = ["dA","dQ","dK","dJ","d10","d09","d08","d07","d06","d05","d04","d03","d02","hA","hQ","hK","hJ","h10","h09","h08","h07","h06","h05","h04","h03","h02","cA","cQ","cK","cJ","c10","c09","c08","c07","c06","c05","c04","c03","c02","sA","sQ","sK","sJ","s10","s09","s08","s07","s06","s05","s04","s03","s02"]
-}
-
-function handVisibility() {
-  if (turn === 1) {
-    renderPlayerHand()
-    renderHiddenComputerHand()
-  } else {
-    renderComputerHand()
-    renderHiddenPlayerHand()
-  }
 }
 
 function updateMessage() {
@@ -876,10 +937,10 @@ function updateMessage() {
   } else if (!winner && round > 0 && step != 'compare-hands') {
     messageEl.textContent = `${turnText}'s Turn`
     roundMessageEl.textContent = `Round ${round}`
-  } else if (!winner && round > 0 && step === 'compare-hands') {
+  } else if (!winner && round > 0 && step === 'round-end') {
     messageEl.textContent = `${roundWinnerText} Wins`
     roundMessageEl.textContent = `Round ${round}`
-  } else if (winner && step === 'compare-hands') {
+  } else if (winner) {
     messageEl.textContent = `${gameWinnerText} is the WINNER!!`
     roundMessageEl.textContent = `Game Over on Round ${round}`
   }
@@ -898,12 +959,16 @@ function roundCount() {
 }
 
 function gameStep() {
-  if (discardBtnEl.disabled === false && nextRoundBtnEl.disabled === true) {
+  if (round === 0) {
+    step = 'New Game'
+  } else if (discardBtnEl.disabled === false && compareBtnEl.disabled === true) {
     step = 'discard'
+  } else if (discardBtnEl.disabled === false && compareBtnEl.disabled === false) {
+    step = 'compare-hands'
   } else if (pickUpBtnEl.disabled === false & nextRoundBtnEl.disabled === true) {
     step = 'pick-up'
   } else if (nextRoundBtnEl.disabled === false) {
-    step = 'compare-hands'
+    step = 'round-end'
   }
 }
 
@@ -932,5 +997,20 @@ function clearDiscardContainer() {
     playerDiscard = []
   }
 }
+
+// function handleInstructions() {
+//   makeAnimationHeaderGo()
+//   if (step === 'New Game') {
+//     instructionsMessageEl.textContent = `Click Deal to start the game`
+//   } else if (compareBtnEl.disabled === false && step === 'discard') {
+//     instructionsMessageEl.textContent = 'You can end the round by clicking Compare Hands, otherwise discard'
+//   } else if (step === 'discard') {
+//     instructionsMessageEl.textContent = `Discard 1 card or 2+ cards if you have a 2/3/4 of-a-kind or 3+ cards if you have a same suit sequence`
+//   } else if (step === 'pick-up') {
+//     instructionsMessageEl.textContent = `Pick up 1 card from the deck or if you have license, 1 card from your opponent's discard pile`
+//   } else if (step === 'round-end') {
+//     instructionsMessageEl.textContent = `Round is over, continue game by clicking Deal`
+//   }
+// }
 
 /*-------------------------- END --------------------------*/
