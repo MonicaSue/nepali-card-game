@@ -406,7 +406,6 @@ function appendPlayerCard(playerDealtCard, idx) {
   playerCard.className = 'card large'
   playerCard.classList.add(playerDealtCard)
   playerCard.id = `P${idx}`
-  playerCard.classList.add('animate__animated', 'animate__flipInY')
   playerHandContainerEl.appendChild(playerCard)
 }
 
@@ -420,7 +419,7 @@ function renderPlayerHand() {
 function hidePlayerHand() {
   let playerCard = document.createElement('div')
   playerCard.className = 'card large'
-  playerCard.classList.add('back-blue')
+  playerCard.classList.add('back-blue', 'animate__animated', 'animate__flipInY')
   playerHandContainerEl.appendChild(playerCard)
 }
 
@@ -449,7 +448,7 @@ function renderComputerHand() {
 function hideComputerHand() {
   let computerCard = document.createElement('div')
   computerCard.className = 'card large'
-  computerCard.classList.add('back-blue')
+  computerCard.classList.add('back-blue', 'animate__animated', 'animate__flipInY')
   computerHandContainerEl.appendChild(computerCard)
 }
 
