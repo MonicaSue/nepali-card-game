@@ -33,10 +33,11 @@ Planning materials and game flow chart can be found [here](https://docs.google.c
 ## Attributions
 * Animations from [Animate.style](https://animate.style/)
 * Background image from [Himalayan Wonders](https://www.himalayanwonders.com/blog/trekking-options-in-the-annapurna-region.html)
-* Card CSS template from [Ben Manley's Card Repository](https://github.com/ManliestBen/css-card-template) 
-* Marigold confetti image by [Flaticon](https://www.flaticon.com/free-icon/mint-marigold_4139490?term=marigold&page=1&position=10&origin=search&related_id=4139490)
+* Card CSS template from [GA Repository](https://github.com/ManliestBen/css-card-template) 
 * Favicon image by [Flaticon](https://www.flaticon.com/free-icon/poker-cards_5537635?term=playing+card&page=1&position=21&origin=tag&related_id=5537635)
-* Winning confetti from [SEI Repository](https://github.com/SEI-Remote/confetti/blob/main/confetti.js)
+* Font from [Google Fonts](https://fonts.google.com/)
+* Marigold confetti image by [Flaticon](https://www.flaticon.com/free-icon/mint-marigold_4139490?term=marigold&page=1&position=10&origin=search&related_id=4139490)
+* Winning confetti from [GA Repository](https://github.com/SEI-Remote/css-card-deck)
 
 ## Next Steps
 - [ ] Computer player functionality
