@@ -278,54 +278,44 @@ const licenseCombos = [
   ["c02","s02"],
 ]
 
+const shuffle = new Audio("assets/audio/card-shuffle.mp3")
 
 /*------------ Variables ------------*/
 
 let deck = []
-
 let computerHand = []
 let computerDiscard = []
 let computerDiscardSelection = []
 let computerPickUpSelection = []
-
 let playerHand = []
 let playerDiscardSelection = []
 let playerPickUpSelection = []
 let playerDiscard = []
-
 let step, round, turn, winner
 let playerLicense, computerLicense, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints
 let roundWinnerText, gameWinnerText, timeLeft
 
-
-/*---- Cached Element References ----*/
+/*------- Cached Element References -------*/
 
 const deckEl = document.getElementById('deck')
 const countdownEl = document.getElementById('countdown')
-
 const computerHandContainerEl = document.getElementById('computer-hand-container')
 const computerDiscardContainerEl = document.getElementById('computer-discard-container')
-
 const playerHandContainerEl = document.getElementById('player-hand-container')
 const playerDiscardContainerEl = document.getElementById('player-discard-container')
-
-
 const dealBtnEl = document.getElementById('deal')
 const discardBtnEl = document.getElementById('discard')
 const pickUpBtnEl = document.getElementById('pick-up-card')
 const compareBtnEl = document.getElementById('compare-hands')
 const nextRoundBtnEl = document.getElementById('next-round')
 const resetBtnEl = document.getElementById('reset')
-
-
 const messageEl = document.getElementById("message")
 const roundMessageEl = document.getElementById("round-message")
 const licenseMessageEl = document.getElementById("license-message")
 const playerPointMessageEl = document.getElementById("player-points")
 const computerPointMessageEl = document.getElementById("computer-points")
 
-
-/*--------- Event Listeners ---------*/
+/*----------- Event Listeners -----------*/
 
 dealBtnEl.addEventListener('click', handleDeal)
 discardBtnEl.addEventListener('click', handleDiscardCheckLicense)
@@ -333,13 +323,10 @@ pickUpBtnEl.addEventListener('click', handlePickUp)
 compareBtnEl.addEventListener('click', handleCompare)
 nextRoundBtnEl.addEventListener('click', handleNextRound)
 resetBtnEl.addEventListener('click', init)
-
-
 document.addEventListener('click', handleCardSelection)
 deckEl.addEventListener('click', handleDeckPickUp)
 
-
-/*--------------------- Functions ---------------------*/
+/*----------------------- Functions -----------------------*/
 
 /*------------ Game Start & Deal Functions ------------*/
 
@@ -396,8 +383,6 @@ function handleDeal(){
   updateLicenseMessage()
   handVisibility()
 }
-
-
 
 /*------------- Append & Render Hand Functions ------------*/
 
@@ -469,7 +454,6 @@ function handVisibility() {
   }
 }
 
-
 /*---------------- Card Selector Function -----------------*/
 
 function handleCardSelection(evt) {
@@ -538,9 +522,45 @@ function handleCardSelection(evt) {
   } 
 }
 
-
-
 /*------------------- Discard Functions -------------------*/
+
+function handleDiscardCheckLicense() {
+  if (turn === 1) {
+    if (playerDiscardSelection.length === 1) {
+      pushDiscard()
+    } else if (playerDiscardSelection.length > 1) {
+      let comboBoolean = false
+      licenseCombos.forEach(licenseCombo => {
+        comboBoolean = licenseCombo.every((card) => playerDiscardSelection.includes(card)) 
+        if (comboBoolean === true) {
+          pushDiscard()
+          playerLicense = true
+        }
+      })
+      if (comboBoolean === false) {
+        playerDiscardSelection = []
+        renderPlayerHand()
+      }
+    }
+  } else {
+    if (computerDiscardSelection.length === 1) {
+      pushDiscard()
+    } else if (computerDiscardSelection.length > 1) {
+      let comboBoolean = false
+      licenseCombos.forEach(licenseCombo => {
+        comboBoolean = licenseCombo.every((card) => computerDiscardSelection.includes(card)) 
+        if (comboBoolean === true) {
+          pushDiscard()
+          computerLicense = true
+        }
+      })
+      if (comboBoolean === false) {  
+        computerDiscardSelection = []
+        renderComputerHand()
+      }
+    }
+  }
+} 
 
 function pushDiscard() {
   if (turn === 1) {
@@ -568,7 +588,6 @@ function pushDiscard() {
   }
   gameStep()
   compareBtnEl.disabled = true
-  checkLicense()
   updateLicenseMessage()
 }
 
@@ -614,7 +633,6 @@ function appendComputerDiscard(computerDiscardCard, idx) {
   }
 }
 
-
 /*------------------- Pick-Up Functions -------------------*/
 
 function handleDeckPickUp() {
@@ -654,6 +672,7 @@ function render() {
   gameStep()
   switchPlayerTurn()
   updateMessage()
+  updateLicenseMessage()
   handVisibility()
   compareEnable()
 }
@@ -691,6 +710,7 @@ function compareEnable() {
 }
 
 function handleCompare() {
+  updateLicenseMessage()
   clearDiscardContainer()
   renderPlayerHand()
   renderComputerHand()
@@ -707,6 +727,8 @@ function handleCompare() {
 }
 
 function handleNextRound() {
+  shuffle.volume = .10
+  shuffle.play()
   compareBtnEl.disabled = true
   clearPlayersHandContainers()
   refillDeck()  
@@ -733,8 +755,6 @@ function handleNextRound() {
       })
     })
 }
-
-
 
 /*------------- Points / Winning Functionality ------------*/
 
@@ -832,90 +852,23 @@ function updateScoreboard() {
   computerPointMessageEl.textContent = `${computerTotalPoints}`
 }
 
-
 /*----------------- License Functionality -----------------*/
 
-function checkLicense() {
-  if (turn === 1) {
-    licenseCombos.forEach(licenseCombo => {
-      if (licenseCombo.every((card) => playerDiscard.includes(card))) {
-        playerLicense = true
-      }
-    })
-  } else {
-    licenseCombos.forEach(licenseCombo => {
-      if (licenseCombo.every((card) => computerDiscard.includes(card))) {
-        computerLicense = true
-      }
-    })
-  }
-}
-
 function updateLicenseMessage() {
-  if (playerLicense === true && computerLicense === true) {
-    licenseMessageEl.textContent = `Player 1 & 2 Have License: Pick Up from Deck or Opponent's Discard Pile`
-  } else if (playerLicense === true && computerLicense === false) {
-    licenseMessageEl.textContent = `Player 1 Has License: Pick Up from Deck or Opponent's Discard Pile`
-  } else if (playerLicense === false && computerLicense === true) {
-    licenseMessageEl.textContent = `Player 2 Has License: Pick Up from Deck or Opponent's Discard Pile`
+  if (turn === 1 && playerLicense === true && step === 'pick-up') {
+    licenseMessageEl.textContent = `Player 1 Has License: Pick Up 1 Card from Deck or Opponent's Discard Pile`
+  } else if (turn === 1 && playerLicense === false) {
+    licenseMessageEl.textContent = ''
+  } else if (turn != 1 && computerLicense === true && step === 'pick-up') {
+    licenseMessageEl.textContent = `Player 2 Has License: Pick Up 1 Card from Deck or Opponent's Discard Pile`
+  } else if (turn != 1 && computerLicense === false) {
+    licenseMessageEl.textContent = ''
   } else {
-    licenseMessageEl.textContent = ``
+    licenseMessageEl.textContent = ''
   }
 }
-
-function handleDiscardCheckLicense() {
-  if (turn === 1) {
-    if (playerDiscardSelection.length === 1) {
-      pushDiscard()
-    } else if (playerDiscardSelection.length > 1) {
-      let comboBoolean = false
-      licenseCombos.forEach(licenseCombo => {
-        comboBoolean = licenseCombo.every((card) => playerDiscardSelection.includes(card)) 
-        if (comboBoolean === true) {
-          pushDiscard()
-        }
-      })
-      if (comboBoolean === false) {
-        playerDiscardSelection = []
-        renderPlayerHand()
-      }
-    }
-  } else {
-    if (computerDiscardSelection.length === 1) {
-      pushDiscard()
-    } else if (computerDiscardSelection.length > 1) {
-      let comboBoolean = false
-      licenseCombos.forEach(licenseCombo => {
-        comboBoolean = licenseCombo.every((card) => computerDiscardSelection.includes(card)) 
-        if (comboBoolean === true) {
-          pushDiscard()
-        }
-      })
-      if (comboBoolean === false) {  
-        computerDiscardSelection = []
-        renderComputerHand()
-      }
-    }
-  }
-} 
 
 /*----------------- Animations & Timers -------------------*/
-
-function makeCardsFlipIn() {
-  computerCard.classList.add('animate__animated', 'animate__flipInY')
-  Headers.offSetHeight
-  playerCard.classList.add('animate__animated', 'animate__flipInY')
-}
-
-function makeCardsFlipOut(){
-
-}
-
-// function makeAnimationHeaderGo() {
-//   instructionsMessageEl.classList.remove('animate__animated', 'animate__slideInRight')
-//   Headers.offsetHeight
-//   instructionsMessageEl.classList.add('animate__animated', 'animate__slideInRight')
-// }
 
 function displayCountdown() {
   timeLeft = 5
@@ -931,7 +884,6 @@ function displayCountdown() {
 
 /*-------------------- Other Functions --------------------*/
 
-//NEED TO UPDATE: DELAYED SWITCH
 function refillDeck() {
   deck = ["dA","dQ","dK","dJ","d10","d09","d08","d07","d06","d05","d04","d03","d02","hA","hQ","hK","hJ","h10","h09","h08","h07","h06","h05","h04","h03","h02","cA","cQ","cK","cJ","c10","c09","c08","c07","c06","c05","c04","c03","c02","sA","sQ","sK","sJ","s10","s09","s08","s07","s06","s05","s04","s03","s02"]
 }
@@ -939,7 +891,7 @@ function refillDeck() {
 function updateMessage() {
   let turnText = turn === 1 ? `Player 1` : `Player 2`
   if (!winner && round === 0) {
-    messageEl.textContent = `Game On! Click Deal`
+    messageEl.textContent = `Game On! Click Deal!`
     roundMessageEl.textContent = ``
   } else if (!winner && round > 0 && step != 'compare-hands') {
     messageEl.textContent = `${turnText}'s Turn`
@@ -1004,20 +956,5 @@ function clearDiscardContainer() {
     playerDiscard = []
   }
 }
-
-// function handleInstructions() {
-//   makeAnimationHeaderGo()
-//   if (step === 'New Game') {
-//     instructionsMessageEl.textContent = `Click Deal to start the game`
-//   } else if (compareBtnEl.disabled === false && step === 'discard') {
-//     instructionsMessageEl.textContent = 'You can end the round by clicking Compare Hands, otherwise discard'
-//   } else if (step === 'discard') {
-//     instructionsMessageEl.textContent = `Discard 1 card or 2+ cards if you have a 2/3/4 of-a-kind or 3+ cards if you have a same suit sequence`
-//   } else if (step === 'pick-up') {
-//     instructionsMessageEl.textContent = `Pick up 1 card from the deck or if you have license, 1 card from your opponent's discard pile`
-//   } else if (step === 'round-end') {
-//     instructionsMessageEl.textContent = `Round is over, continue game by clicking Deal`
-//   }
-// }
 
 /*-------------------------- END --------------------------*/

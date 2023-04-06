@@ -37,6 +37,7 @@ Planning materials and game flow chart can be found [here](https://docs.google.c
 * Favicon image by [Flaticon](https://www.flaticon.com/free-icon/poker-cards_5537635?term=playing+card&page=1&position=21&origin=tag&related_id=5537635)
 * Font from [Google Fonts](https://fonts.google.com/)
 * Marigold confetti image by [Flaticon](https://www.flaticon.com/free-icon/mint-marigold_4139490?term=marigold&page=1&position=10&origin=search&related_id=4139490)
+* Audio from [Pixabay](https://pixabay.com/)
 * Winning confetti from [GA Repository](https://github.com/SEI-Remote/css-card-deck)
 
 ## Next Steps
