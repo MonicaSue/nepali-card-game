@@ -285,20 +285,23 @@ let deck = []
 
 let computerHand = []
 let computerDiscard = []
-let computerDiscardSelection = [] //temporary array
-let computerPickUpSelection = [] //temporary array
+let computerDiscardSelection = []
+let computerPickUpSelection = []
 
 let playerHand = []
-let playerDiscardSelection = [] //temporary array
-let playerPickUpSelection = [] //temporary array
+let playerDiscardSelection = []
+let playerPickUpSelection = []
 let playerDiscard = []
 
-let step, round, turn, playerLicense, computerLicense, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints, roundWinnerText, winner, gameWinnerText
+let step, round, turn, winner
+let playerLicense, computerLicense, playerTotalPoints, playerRoundPoints, computerTotalPoints, computerRoundPoints
+let roundWinnerText, gameWinnerText, timeLeft
 
 
 /*---- Cached Element References ----*/
 
 const deckEl = document.getElementById('deck')
+const countdownEl = document.getElementById('countdown')
 
 const computerHandContainerEl = document.getElementById('computer-hand-container')
 const computerDiscardContainerEl = document.getElementById('computer-discard-container')
@@ -313,7 +316,6 @@ const pickUpBtnEl = document.getElementById('pick-up-card')
 const compareBtnEl = document.getElementById('compare-hands')
 const nextRoundBtnEl = document.getElementById('next-round')
 const resetBtnEl = document.getElementById('reset')
-// const instructionsBtnEl = document.getElementById('instructions')
 
 
 const messageEl = document.getElementById("message")
@@ -321,7 +323,6 @@ const roundMessageEl = document.getElementById("round-message")
 const licenseMessageEl = document.getElementById("license-message")
 const playerPointMessageEl = document.getElementById("player-points")
 const computerPointMessageEl = document.getElementById("computer-points")
-// const instructionsMessageEl = document.getElementById("instructions-message")
 
 
 /*--------- Event Listeners ---------*/
@@ -332,7 +333,7 @@ pickUpBtnEl.addEventListener('click', handlePickUp)
 compareBtnEl.addEventListener('click', handleCompare)
 nextRoundBtnEl.addEventListener('click', handleNextRound)
 resetBtnEl.addEventListener('click', init)
-// instructionsBtnEl.addEventListener('click', handleInstructions)
+
 
 document.addEventListener('click', handleCardSelection)
 deckEl.addEventListener('click', handleDeckPickUp)
@@ -391,7 +392,6 @@ function handleDeal(){
   computerLicense = false
   roundCount()
   gameStep()
-  // handleInstructions()
   updateMessage()
   updateLicenseMessage()
   handVisibility()
@@ -411,7 +411,7 @@ function appendPlayerCard(playerDealtCard, idx) {
 }
 
 function renderPlayerHand() {
-  playerHandContainerEl.innerHTML = '' // clean state
+  playerHandContainerEl.innerHTML = ''
   playerHand.forEach((playerDealtCard, idx) => {
     appendPlayerCard(playerDealtCard, idx)
   })
@@ -440,7 +440,7 @@ function appendComputerCard(computerDealtCard, idx) {
 }
 
 function renderComputerHand() {
-  computerHandContainerEl.innerHTML = '' // clean state
+  computerHandContainerEl.innerHTML = ''
   computerHand.forEach((computerDealtCard, idx) => {
     appendComputerCard(computerDealtCard, idx)
   })
@@ -575,7 +575,7 @@ function pushDiscard() {
 
 function renderDiscard() {
   if (turn === 1) {
-    playerDiscardContainerEl.innerHTML = '' // clean state
+    playerDiscardContainerEl.innerHTML = ''
     playerDiscard.forEach((playerDiscardCard, idx) => {
       appendPlayerDiscard(playerDiscardCard, idx)
     })
@@ -583,7 +583,7 @@ function renderDiscard() {
     discardBtnEl.disabled = true
     playerDiscardSelection = []
   } else {
-    computerDiscardContainerEl.innerHTML = '' // clean state
+    computerDiscardContainerEl.innerHTML = ''
     computerDiscard.forEach((computerDiscardCard, idx) => {
       appendComputerDiscard(computerDiscardCard, idx)
     })
@@ -634,6 +634,7 @@ function handleDeckPickUp() {
 }
 
 function handlePickUp () {
+  displayCountdown()
   if (turn === 1) {
     playerHand.push(playerPickUpSelection[0])
     renderPlayerHand()
@@ -646,6 +647,10 @@ function handlePickUp () {
   deckEl.classList.remove('selection')
   pickUpBtnEl.disabled = true
   discardBtnEl.disabled = false
+  setTimeout(render, 6000)
+}
+
+function render() {
   clearDiscardContainer()
   gameStep()
   switchPlayerTurn()
@@ -653,8 +658,6 @@ function handlePickUp () {
   handVisibility()
   compareEnable()
 }
-
-
 
 /*---------- Compare Hands & Next Round Functions ---------*/
 
@@ -864,38 +867,32 @@ function updateLicenseMessage() {
 function handleDiscardCheckLicense() {
   if (turn === 1) {
     if (playerDiscardSelection.length === 1) {
-      console.log('only one card')
       pushDiscard()
     } else if (playerDiscardSelection.length > 1) {
       let comboBoolean = false
       licenseCombos.forEach(licenseCombo => {
         comboBoolean = licenseCombo.every((card) => playerDiscardSelection.includes(card)) 
         if (comboBoolean === true) {
-          console.log('boolean check', comboBoolean)
           pushDiscard()
         }
       })
       if (comboBoolean === false) {
-        console.log('license fails')
         playerDiscardSelection = []
         renderPlayerHand()
       }
     }
   } else {
     if (computerDiscardSelection.length === 1) {
-      console.log('only one card')
       pushDiscard()
     } else if (computerDiscardSelection.length > 1) {
       let comboBoolean = false
       licenseCombos.forEach(licenseCombo => {
         comboBoolean = licenseCombo.every((card) => computerDiscardSelection.includes(card)) 
         if (comboBoolean === true) {
-          console.log('boolean check', comboBoolean)
           pushDiscard()
         }
       })
       if (comboBoolean === false) {  
-        console.log('license fails')
         computerDiscardSelection = []
         renderComputerHand()
       }
@@ -903,7 +900,7 @@ function handleDiscardCheckLicense() {
   }
 } 
 
-/*---------------------- Animations -----------------------*/
+/*----------------- Animations & Timers -------------------*/
 
 function makeCardsFlipIn() {
   computerCard.classList.add('animate__animated', 'animate__flipInY')
@@ -921,6 +918,17 @@ function makeCardsFlipOut(){
 //   instructionsMessageEl.classList.add('animate__animated', 'animate__slideInRight')
 // }
 
+function displayCountdown() {
+  timeLeft = 5
+  let timer = setInterval(function() {
+    countdownEl.textContent = `Switching Players in ${timeLeft}`
+    timeLeft -= 1
+    if (timeLeft <0) {
+      countdownEl.textContent = ''
+      clearInterval(timer)
+    }
+  }, 1000)
+}
 
 /*-------------------- Other Functions --------------------*/
 
