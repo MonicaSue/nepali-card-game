@@ -1,5 +1,5 @@
 # Nepali Card Game
-![nepali card game screenshot](./assets/images/Nepali%20Card%20Game%20Screenshot.png)
+![nepali card game screenshot](./assets/images/Nepali%20Screenshot.png)
 
 ## [Play Game Here](https://nepali-card-game.netlify.app/)
 This card game was learned on the Annapurna trail by a local Nepali guide. I want to share this fun and easy card game to the masses! 
