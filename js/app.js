@@ -893,7 +893,7 @@ function updateMessage() {
   if (!winner && round === 0) {
     messageEl.textContent = `Game On! Click Deal!`
     roundMessageEl.textContent = ``
-  } else if (!winner && round > 0 && step != 'compare-hands') {
+  } else if (!winner && round > 0 && step != 'round-end') {
     messageEl.textContent = `${turnText}'s Turn`
     roundMessageEl.textContent = `Round ${round}`
   } else if (!winner && round > 0 && step === 'round-end') {

@@ -9,10 +9,11 @@ body {
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
+  font-family: 'Bitter', serif;
 }
 
 h1 {
-  margin-top: 30px;
+  margin-bottom: 10px;
   font-family: var(--titleFont);
   text-shadow: 1px 1px 1px white, 20px 1px 20px white;
   font-weight: 800;
@@ -24,12 +25,12 @@ h1 {
 }
 
 h2, h4, h5, h6 {
-  font-family: Arial, Helvetica, sans-serif;
   color: black;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 h6 {
@@ -37,6 +38,7 @@ h6 {
   color: red;
   font-weight: 800;
   text-shadow: 1px 1px 20px white, 50px 1px 20px white;
+  margin-bottom: 15px;
 }
 
 main {
@@ -93,9 +95,9 @@ main {
 }
 
 
-button {
+#deal, #discard, #pick-up-card, #compare-hands, #next-round, #reset {
   background-color: #ccaa89;
-  margin: 8px; */
+  margin: 10px 5px;
   cursor: pointer;
   padding: 10px 16px;
   font-size: 14px;
@@ -116,9 +118,8 @@ button {
   grid-template-columns: auto auto;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  padding: 10px;
-}
+  margin-top: 10px;
+  }
 
 .scoreboard-item {
   display: flex;
@@ -147,3 +148,41 @@ button:hover {
   background-color: rgb(133, 111, 89);
   color: white;
 }
+
+.dropbtn {
+  margin: 20px 0 10px 30px;
+  border: 5px double #dcdbda;
+  background-color: #4b79b9;
+  color: white
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  margin-left: 30px;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1dd;
+  min-width: 500px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content p {
+  color: black;
+  padding: 10px 5px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #07326e;
+}
+
