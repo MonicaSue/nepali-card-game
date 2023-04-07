@@ -2,7 +2,7 @@
 ![nepali card game screenshot](./assets/images/Nepali%20Card%20Game%20Screenshot.png)
 
 ## [Play Game Here](https://nepali-card-game.netlify.app/)
-This card game was learned on the Annapurna trail by a local Nepali guide. I want to share this fun and easy card game to you! 
+This card game was learned on the Annapurna trail by a local Nepali guide. I want to share this fun and easy card game to the masses! 
 
 ## Getting Started
 
@@ -32,19 +32,19 @@ Planning materials and game flow chart can be found [here](https://docs.google.c
 
 ## Attributions
 * Animations from [Animate.style](https://animate.style/)
+* Audio from [Pixabay](https://pixabay.com/)
 * Background image from [Himalayan Wonders](https://www.himalayanwonders.com/blog/trekking-options-in-the-annapurna-region.html)
 * Card CSS template from [GA Repository](https://github.com/ManliestBen/css-card-template) 
 * Favicon image by [Flaticon](https://www.flaticon.com/free-icon/poker-cards_5537635?term=playing+card&page=1&position=21&origin=tag&related_id=5537635)
 * Font from [Google Fonts](https://fonts.google.com/)
 * Instructional Hoverable Dropdown from [W3 Schools](https://www.w3schools.com/howto/howto_css_dropdown.asp)
 * Marigold confetti image by [Flaticon](https://www.flaticon.com/free-icon/mint-marigold_4139490?term=marigold&page=1&position=10&origin=search&related_id=4139490)
-* Audio from [Pixabay](https://pixabay.com/)
 * Winning confetti from [GA Repository](https://github.com/SEI-Remote/css-card-deck)
 
 ## Next Steps
 - [ ] Computer player functionality
 - [ ] Update confetti to marigold flowers
 - [ ] Dark Mode
-- [ ] Sound
+- [x] Sound
 - [ ] Mobile-friendly layout
 - [x] Instructional pop-up window

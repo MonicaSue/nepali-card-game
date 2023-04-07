@@ -278,7 +278,9 @@ const licenseCombos = [
   ["c02","s02"],
 ]
 
-const shuffle = new Audio("assets/audio/card-shuffle.mp3")
+const shuffle = new Audio('assets/audio/card-shuffle.mp3')
+const ring = new Audio('assets/audio/himalayan-singing-bowls-trimmed.mp3')
+const winSong = new Audio('assets/audio/Nepalese Music  Mandala  Traditional Instrumental Music.mp3')
 
 /*------------ Variables ------------*/
 
@@ -710,6 +712,8 @@ function compareEnable() {
 }
 
 function handleCompare() {
+  ring.volume = .10
+  ring.play()
   updateLicenseMessage()
   clearDiscardContainer()
   renderPlayerHand()
@@ -837,11 +841,15 @@ function checkGameWinner() {
   if (playerTotalPoints >= 100) {
     winner = true
     confetti.start(3000)
+    winSong.volume = .10
+    winSong.play()
     gameWinnerText = 'Player 2'
     nextRoundBtnEl.disabled = true
   } else if (computerTotalPoints >= 100) {
     winner = true
     confetti.start(3000)
+    winSong.volume = .10
+    winSong.play()
     gameWinnerText = 'Player 1'
     nextRoundBtnEl.disabled = true
   }
