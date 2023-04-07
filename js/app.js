@@ -554,7 +554,7 @@ function handleDiscardCheckLicense() {
         if (comboBoolean === true) {
           pushDiscard()
           computerLicense = true
-        }
+      }
       })
       if (comboBoolean === false) {  
         computerDiscardSelection = []
@@ -666,11 +666,11 @@ function handlePickUp () {
   deckEl.classList.remove('selection')
   pickUpBtnEl.disabled = true
   discardBtnEl.disabled = false
+  clearDiscardContainer()
   setTimeout(render, 6000)
 }
 
 function render() {
-  clearDiscardContainer()
   gameStep()
   switchPlayerTurn()
   updateMessage()
