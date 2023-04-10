@@ -2,27 +2,27 @@
 ![nepali card game screenshot](./assets/images/Nepali%20Screenshot.png)
 
 ## [Play Game Here](https://nepali-card-game.netlify.app/)
-This card game was learned on the Annapurna trail by a local Nepali guide. I want to share this fun and easy card game to the masses! 
+My husband learned this card game on the Annapurna trail by a local Nepali guide and I want to share this fun and easy card game with the masses! 
 
 ## Getting Started
 
 ### General Game Play:
-* Each player is dealt 5 cards at the start of each new game and round
+* Each player is dealt 5 cards at the start of each new game and round.
 * Player 1 must discard one of the following options:
   * 1 card, 
   * Or a 'License' enabling discard:
     * 2-4 cards if 2/3/4-of-a-kind is present
     * 3-5 cards of the same suit sequence
-* Player 1 then picks up 1 card from the deck or opponent's discard pile if 'License' is enabled
-* Player 1's turn is over 
-* Moves to Player 2 to repeat Discard & Pick Up steps
+* Player 1 then picks up 1 card from the deck or opponent's discard pile if 'License' is enabled.
+* Player 1's turn is over. 
+* Moves to Player 2 to repeat the Discard & Pick Up steps.
 
 ### How to Win:
-* At the start of a player's turn, if the total value of a hand is less than or equal to 5, then the player can 'Compare Hands' to end round
-* Game will continue for multiple rounds until a player reaches 100+ penalized points
-* The player with the least amount of points wins the game
+* At the start of a player's turn, if the total value of a hand is less than or equal to 5, then the player can 'Compare Hands' to end the round.
+* The game will continue for multiple rounds until a player reaches 100+ penalized points.
+* The player with the least amount of points wins the game.
 
-Planning materials and game flow chart can be found [here](https://docs.google.com/document/d/1Aere-NPFgVWvv8nPb7wXUHFs2MAKJY3A7RmimAjnevU/edit#heading=h.gqcl1qcnnnca)
+Planning materials and a flow chart illustrating the steps of gameplay can be found [here](https://docs.google.com/document/d/1Aere-NPFgVWvv8nPb7wXUHFs2MAKJY3A7RmimAjnevU/edit#heading=h.gqcl1qcnnnca)
 
 ## Technologies Used
 * JavaScript
